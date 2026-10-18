@@ -8,7 +8,7 @@ Five little classroom tools for nursery and primary, in English. A vibe coding e
 | Monster Name Picker | All ages | Every name gets its own monster. Fair turns: everyone is picked once before anyone is picked again. |
 | Tidy-up Monster | Nursery & Reception | A tidy-up timer. The monster walks home, collects the toys and throws a party at the end. With music. |
 | Ten Frame Flash | Lower primary | Subitising with ten frames, dice or scattered monsters. "How many?" or "How many more to make 10?". |
-| Planet Walk | Upper primary | The solar system to scale for your playground: distances in metres and children's steps, real sizes at that scale, a walking monster and printable planet signs. |
+| Planet Walk | Upper primary | A 3D solar system with textured planets on their orbits. Line the planets up and walk it to scale: distances in metres and children's steps, close-ups of every planet, a "real sizes" switch that shows how tiny the planets really are, and printable planet signs for the playground. |
 
 Space bar = main action in every tool. Full screen button for the board.
 
