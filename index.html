@@ -1,0 +1,645 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Monster Classroom</title>
+<meta name="description" content="Monster Classroom: five little classroom tools for nursery and primary. Noise Monster, Tidy-up Monster, Ten Frame Flash, Planet Walk and a Monster Name Picker.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FFF6E9;--ink:#2B2350;--muted:#6E6790;--line:#EADFCB;--purple:#9B6BFF;--pink:#FF7EB6;--teal:#2ED3B7;--blue:#4CB8FF;--orange:#FF9F43;--yellow:#FFC93C;--green:#8BD346;--red:#FF6B6B}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 Nunito,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+button,select,input,textarea{font:inherit;color:inherit}
+a{color:inherit}
+.view{display:none}.view.on{display:block}
+.monster{display:block;width:100%;height:100%;overflow:visible}
+.monster .eye{transform-box:fill-box;transform-origin:center;animation:blink 4.6s infinite}
+@keyframes blink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.08)}}
+@keyframes bob{from{transform:translateY(0)}to{transform:translateY(-10px)}}
+@keyframes pop{from{transform:scale(0)}70%{transform:scale(1.15)}to{transform:scale(1)}}
+
+/* ---------- home ---------- */
+.home-wrap{max-width:1160px;margin:0 auto;padding:24px 20px 40px}
+.hero{position:relative;display:grid;grid-template-columns:1.15fr 1fr;gap:10px;background:linear-gradient(135deg,#7B5CFF 0%,#A879FF 55%,#FF8FC7 100%);border-radius:36px;color:#fff;padding:38px 42px 0;overflow:hidden;box-shadow:0 18px 40px rgba(123,92,255,.25)}
+.hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 12% 20%,rgba(255,255,255,.18) 0 40px,transparent 41px),radial-gradient(circle at 88% 12%,rgba(255,255,255,.14) 0 26px,transparent 27px),radial-gradient(circle at 60% 90%,rgba(255,255,255,.1) 0 60px,transparent 61px);pointer-events:none}
+.hero .kick{font:600 14px Fredoka;letter-spacing:.08em;text-transform:uppercase;opacity:.9}
+.hero h1{font:700 clamp(42px,6.4vw,76px)/.95 Fredoka;margin:8px 0 14px}
+.hero p{font-size:19px;max-width:500px;margin:0 0 26px;font-weight:700;opacity:.95}
+.hero-mons{display:flex;align-items:flex-end;justify-content:center;align-self:end;position:relative}
+.hero-mons div{width:clamp(110px,14vw,170px);margin:0 -10px -8px;animation:bob 1.6s ease-in-out infinite alternate}
+.hero-mons div:nth-child(2){width:clamp(130px,17vw,210px);animation-delay:.4s;z-index:1}
+.hero-mons div:nth-child(3){animation-delay:.8s}
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0}
+.age{display:inline-flex;align-items:center;font:600 13px Fredoka;padding:4px 11px;border-radius:999px;color:#fff;white-space:nowrap}
+.sec-h{font:600 28px Fredoka;margin:34px 0 2px}
+.sec-sub{color:var(--muted);margin:0 0 16px;font-weight:700}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.tcard{display:flex;flex-direction:column;background:#fff;border-radius:30px;text-decoration:none;color:inherit;box-shadow:0 3px 0 var(--line),0 16px 30px rgba(43,35,80,.08);overflow:hidden;transition:transform .2s,box-shadow .2s}
+.tcard:hover,.tcard:focus-visible{transform:translateY(-5px) rotate(-.5deg);box-shadow:0 3px 0 var(--line),0 24px 40px rgba(43,35,80,.14);outline:none}
+.tcard .art{height:200px;position:relative;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}
+.grid2 .tcard .art{height:220px}
+.tcard .body{padding:16px 22px 20px;display:flex;flex-direction:column;flex:1}
+.tcard h3{font:600 27px/1.1 Fredoka;margin:10px 0 6px}
+.tcard p{margin:0 0 14px;color:#4b4470;font-weight:700}
+.tcard .go{margin-top:auto;font:600 17px Fredoka;color:var(--purple)}
+.art .m{width:170px;animation:bob 1.8s ease-in-out infinite alternate}
+.art .zz{position:absolute;font:700 30px Fredoka;color:#8E7CF0;right:28%;top:22px;letter-spacing:4px}
+.tips{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:34px}
+.tip{background:#fff;border-radius:22px;padding:16px 18px;box-shadow:0 3px 0 var(--line)}
+.tip b{font:600 18px Fredoka;display:block;margin-bottom:2px}
+.tip span{color:#4b4470;font-weight:700;font-size:15px}
+footer{max-width:1160px;margin:0 auto;padding:10px 20px 40px;color:var(--muted);font-weight:700;font-size:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+/* ---------- toolbar ---------- */
+#tb{display:none;position:fixed;top:0;left:0;right:0;height:64px;align-items:center;gap:14px;padding:0 16px;background:rgba(255,246,233,.95);backdrop-filter:blur(8px);border-bottom:2px solid var(--line);z-index:30}
+body.in-tool #tb{display:flex}
+.tb-back{text-decoration:none;font:600 16px Fredoka;background:#fff;border-radius:999px;padding:8px 16px;box-shadow:0 0 0 2px var(--line) inset;white-space:nowrap}
+.tb-title{display:flex;align-items:center;gap:10px;min-width:0}
+.tb-title b{font:600 23px Fredoka;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-act{margin-left:auto;display:flex;gap:8px}
+.chip{border:0;border-radius:999px;padding:8px 14px;font:600 14px Fredoka;background:#fff;box-shadow:0 0 0 2px var(--line) inset;cursor:pointer;white-space:nowrap}
+.chip.off{opacity:.5;text-decoration:line-through}
+.tool{position:fixed;inset:64px 0 0 0;overflow:hidden}
+.tool.on{display:flex;flex-direction:column}
+.dock{flex:none;display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:center;padding:12px 16px 14px;background:#fff;border-top:2px solid var(--line);position:relative;z-index:3}
+.btn{border:0;border-radius:999px;padding:10px 18px;font:600 16px Fredoka;background:#fff;box-shadow:0 0 0 2px var(--line) inset;cursor:pointer;white-space:nowrap}
+.btn:hover{box-shadow:0 0 0 2px #d6c7ad inset}
+.btn.big{padding:13px 28px;font-size:21px;color:#fff;background:var(--purple);box-shadow:0 5px 0 #6c43d6}
+.btn.big:active{transform:translateY(3px);box-shadow:0 2px 0 #6c43d6}
+.btn.big.teal{background:#18b89c;box-shadow:0 5px 0 #0f8a74}.btn.big.orange{background:var(--orange);box-shadow:0 5px 0 #d97a1f}.btn.big.pink{background:#ff5fa2;box-shadow:0 5px 0 #d43c80}
+.ctl{display:flex;flex-direction:column;gap:3px;font-size:12.5px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.seg{display:inline-flex;background:#F3EADB;border-radius:999px;padding:4px;flex-wrap:wrap}
+.seg button{border:0;background:none;border-radius:999px;padding:6px 12px;font:600 14px Fredoka;cursor:pointer;color:var(--muted);text-transform:none;letter-spacing:0}
+.seg button.on{background:#fff;color:var(--ink);box-shadow:0 2px 6px rgba(43,35,80,.15)}
+input[type=range]{accent-color:var(--purple);width:150px}
+
+/* ---------- noise ---------- */
+#v-noise .stage{flex:1;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:0;background:radial-gradient(circle at 50% 42%,#F4F0FF,#DCD2FF);transition:background .4s}
+#v-noise.angry .stage{background:radial-gradient(circle at 50% 42%,#FFEDED,#FFC2C2)}
+#v-noise.sleep .stage{background:radial-gradient(circle at 50% 42%,#ECE8FF,#C9BEF7)}
+.bubble{font:600 clamp(20px,3vw,34px) Fredoka;background:#fff;padding:10px 24px;border-radius:26px;box-shadow:0 6px 0 rgba(43,35,80,.08);position:relative;margin-bottom:12px;text-align:center;max-width:80vw}
+.bubble:after{content:"";position:absolute;left:50%;bottom:-12px;margin-left:-12px;border:12px solid transparent;border-top-color:#fff;border-bottom:0}
+.nmon-wrap{position:relative;width:min(40vh,380px);height:min(40vh,380px)}
+#nMon{width:100%;height:100%;transform-origin:50% 90%}
+.zzz{position:absolute;right:-6%;top:0;width:30%;height:60%;pointer-events:none}
+.zzz span{position:absolute;font:700 Fredoka;color:#7a66e6;opacity:0;animation:zz 3.2s infinite}
+.zzz span:nth-child(1){font-size:26px;left:0;animation-delay:0s}.zzz span:nth-child(2){font-size:36px;left:30%;animation-delay:1s}.zzz span:nth-child(3){font-size:50px;left:60%;animation-delay:2s}
+@keyframes zz{0%{opacity:0;transform:translateY(60px)}20%{opacity:1}100%{opacity:0;transform:translateY(-30px)}}
+.stars{display:flex;gap:8px;margin-top:16px}
+.star{width:48px;height:48px}
+.star path{fill:#fff;stroke:#d9cff7;stroke-width:3}
+.star.on path{fill:var(--yellow);stroke:#e6a700}
+.star.on{animation:pop .5s}
+.starbar{display:flex;align-items:center;gap:10px;margin-top:10px;font:600 14px Fredoka;color:var(--muted)}
+.starbar div{width:200px;height:12px;background:#fff;border-radius:99px;overflow:hidden;box-shadow:0 0 0 2px rgba(43,35,80,.06) inset}
+.starbar i{display:block;height:100%;width:0;background:var(--yellow);border-radius:99px}
+.meter{position:absolute;right:30px;top:30px;bottom:30px;width:54px;border-radius:999px;background:linear-gradient(to top,#8BD346 0%,#C8E04A 35%,#FFC93C 60%,#FF6B6B 85%);box-shadow:0 0 0 5px #fff,0 8px 20px rgba(43,35,80,.12)}
+.mcover{position:absolute;left:0;right:0;top:0;height:100%;background:#fff;border-radius:999px 999px 0 0;opacity:.88}
+.mthr{position:absolute;left:-14px;right:-14px;height:5px;background:var(--ink);border-radius:3px}
+.mthr span{position:absolute;right:100%;top:-11px;margin-right:6px;font:600 13px Fredoka;background:var(--ink);color:#fff;border-radius:8px;padding:2px 8px;white-space:nowrap}
+.nmsg{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);background:#fff;border-radius:14px;padding:8px 14px;font-weight:800;font-size:14px;color:var(--muted);text-align:center;max-width:90%}
+
+/* ---------- tidy ---------- */
+#v-tidy .scene{flex:1;position:relative;overflow:hidden;background:linear-gradient(#9FD9FF 0%,#D7F0FF 55%,#E9F8FF 70%)}
+#v-tidy.done .scene{background:linear-gradient(#FFD6EC 0%,#FFF0D6 70%)}
+.cloud{position:absolute;width:160px;opacity:.95;animation:drift 40s linear infinite}
+@keyframes drift{from{transform:translateX(-200px)}to{transform:translateX(110vw)}}
+.hills{position:absolute;left:0;right:0;bottom:24%;width:100%;height:30%}
+.ground{position:absolute;left:0;right:0;bottom:0;height:27%;background:linear-gradient(#8ED16A,#74BD55)}
+.trail{position:absolute;left:4%;right:18%;bottom:20%;border-top:9px dashed rgba(255,255,255,.75)}
+.home{position:absolute;right:1.5%;bottom:14%;width:min(19vw,230px)}
+.toy{position:absolute;bottom:19.5%;width:min(6.5vw,66px);transform:translateX(-50%)}
+.toy.got{animation:toyGot .7s forwards}
+@keyframes toyGot{35%{transform:translate(-50%,-70px) scale(1.25)}100%{transform:translate(-50%,-140px) scale(0);opacity:0}}
+.tmon{position:absolute;bottom:17%;width:min(17vw,200px);aspect-ratio:200/236;transform:translateX(-50%);transition:left .25s linear}
+.tmon .in{width:100%;height:100%}
+.tmon.walk .in{animation:walk .42s ease-in-out infinite alternate}
+.tmon.party .in{animation:jump .5s ease-in-out infinite alternate}
+@keyframes walk{from{transform:translateY(0) rotate(-5deg)}to{transform:translateY(-14px) rotate(5deg)}}
+@keyframes jump{from{transform:translateY(0)}to{transform:translateY(-40px)}}
+.tclock{position:absolute;top:14px;left:50%;transform:translateX(-50%);font:700 clamp(54px,10vw,120px)/1 Fredoka;color:#fff;text-shadow:0 5px 0 rgba(43,35,80,.22)}
+.tbag{position:absolute;top:20px;left:22px;display:flex;align-items:center;gap:10px;background:#fff;border-radius:20px;padding:8px 16px 8px 10px;font:600 26px Fredoka;box-shadow:0 5px 0 rgba(43,35,80,.1)}
+.tbag svg{width:46px;height:46px}
+.tdone{position:absolute;left:50%;top:30%;transform:translate(-50%,-50%);font:700 clamp(40px,7vw,86px)/1 Fredoka;color:#ff4f9a;text-shadow:0 5px 0 #fff;display:none;text-align:center;white-space:nowrap}
+#v-tidy.done .tdone{display:block;animation:pop .6s}
+
+/* ---------- ten frame ---------- */
+#v-ten .stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;min-height:0;padding:14px;background:radial-gradient(circle at 50% 40%,#fff,#E3F8F2)}
+.fq{font:600 clamp(24px,3.6vw,40px) Fredoka;text-align:center}
+.fboard{width:min(92vw,820px);height:min(52vh,460px);display:flex;align-items:center;justify-content:center}
+.fboard svg{width:100%;height:100%}
+.fcover{position:relative;width:min(42vh,330px);height:min(42vh,330px)}
+.fcover span{position:absolute;right:-10%;top:-6%;font:700 110px/1 Fredoka;color:#18b89c;animation:bob 1s ease-in-out infinite alternate}
+.fans{font:700 clamp(40px,7vw,80px)/1 Fredoka;min-height:1em;text-align:center}
+.fans small{display:block;font-size:.42em;color:var(--muted);margin-top:4px}
+.cnt{transform-box:fill-box;transform-origin:center;animation:pop .22s ease-out}
+
+/* ---------- planets ---------- */
+#v-planets.on{display:block;overflow:auto;color:#fff}
+#v-planets{background-color:#121737;background-image:radial-gradient(1.5px 1.5px at 10% 20%,rgba(255,255,255,.8) 50%,transparent 51%),radial-gradient(1px 1px at 70% 40%,rgba(255,255,255,.7) 50%,transparent 51%),radial-gradient(1.5px 1.5px at 40% 80%,rgba(255,255,255,.6) 50%,transparent 51%),radial-gradient(1px 1px at 85% 75%,rgba(255,255,255,.7) 50%,transparent 51%);background-size:180px 180px,240px 240px,300px 300px,210px 210px}
+.pl-wrap{max-width:1180px;margin:0 auto;padding:22px 20px 40px}
+.pl-head{display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px}
+.pl-head h2{font:600 clamp(22px,3vw,32px) Fredoka;margin:0}
+.pl-head .seg{background:rgba(255,255,255,.12)}.pl-head .seg button{color:#cfd3ff}.pl-head .seg button.on{background:#fff;color:var(--ink)}
+.pl-head input{width:90px;border-radius:999px;border:0;padding:7px 12px;font:600 15px Fredoka;color:var(--ink)}
+.pl-sub{color:#b9bfe8;font-weight:700;margin:6px 0 14px}
+.ptrack{position:relative;background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.1);border-radius:24px;padding:6px 0;margin-bottom:12px}
+.ptrack svg{display:block;width:100%;height:auto}
+.ptrack .lbl{position:absolute;right:18px;top:10px;font:600 13px Fredoka;color:#b9bfe8;letter-spacing:.05em;text-transform:uppercase}
+.walker{position:absolute;bottom:47%;width:clamp(34px,5vw,58px);transform:translateX(-50%);pointer-events:none;transition:opacity .3s}
+.walker .in{animation:walk .4s ease-in-out infinite alternate}
+.walker.stop .in{animation:none}
+.pl-read{display:flex;flex-wrap:wrap;align-items:center;gap:12px 22px;margin:8px 0 18px}
+.pl-read .num{font:600 22px Fredoka}.pl-read .num small{display:block;font:700 12px Nunito;color:#b9bfe8;text-transform:uppercase;letter-spacing:.05em}
+.pl-reach{font:600 22px Fredoka;color:var(--yellow);min-height:1.4em}
+.pcards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.pcard{background:rgba(255,255,255,.07);border:2px solid rgba(255,255,255,.1);border-radius:22px;padding:14px 16px;display:grid;grid-template-columns:62px 1fr;gap:4px 14px;align-items:start;transition:transform .25s,border-color .25s,background .25s}
+.pcard.hl{border-color:var(--yellow);background:rgba(255,201,60,.14);transform:scale(1.03)}
+.pball{width:62px;height:62px;border-radius:50%;grid-row:span 3;position:relative;box-shadow:inset -10px -8px 0 rgba(0,0,0,.18)}
+.pball.ring:after{content:"";position:absolute;left:-14px;right:-14px;top:24px;height:14px;border:4px solid #f3e2a9;border-radius:50%;transform:rotate(-14deg)}
+.pcard h4{margin:0;font:600 21px Fredoka}
+.pcard .d{font-weight:800}.pcard .d b{color:var(--yellow);font:600 20px Fredoka}
+.pcard .s{font-size:14px;color:#cfd3ff;font-weight:700}
+.pcard p{grid-column:1/-1;margin:6px 0 0;font-size:14.5px;color:#e4e6ff;font-weight:700}
+.pl-note{color:#9aa1d6;font-size:13.5px;font-weight:700;margin-top:16px}
+.btn.dark{background:rgba(255,255,255,.1);color:#fff;box-shadow:0 0 0 2px rgba(255,255,255,.2) inset}
+#printSigns{display:none}
+@media print{
+  body>*:not(#printSigns){display:none!important}
+  #printSigns{display:block}
+  .sign{height:96vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;page-break-after:always;font-family:Fredoka,sans-serif;color:#2B2350}
+  .sign .ball{width:9cm;height:9cm;border-radius:50%;margin-bottom:1cm;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .sign h2{font-size:64pt;margin:0}.sign .dd{font-size:26pt;margin:.3cm 0}.sign p{font:600 16pt Nunito,sans-serif;max-width:16cm}
+}
+
+/* ---------- names ---------- */
+#v-names .ntop{flex:none;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px 18px;padding:14px 16px;background:#fff;border-bottom:2px solid var(--line)}
+.ncount{font:600 18px Fredoka;color:var(--muted)}
+.ngrid{flex:1;overflow:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:14px;padding:18px;align-content:start;background:radial-gradient(circle at 50% 0%,#fff,#FFEBD9)}
+.ncard{background:#fff;border-radius:24px;padding:10px 8px 12px;text-align:center;box-shadow:0 3px 0 var(--line);transition:transform .12s,box-shadow .12s,opacity .3s}
+.ncard .av{height:104px}
+.ncard b{display:block;font:600 18px Fredoka;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ncard.hl{transform:scale(1.12);box-shadow:0 0 0 6px var(--yellow),0 10px 20px rgba(43,35,80,.2);position:relative;z-index:2}
+.ncard.picked{opacity:.3;filter:grayscale(.7)}
+#v-names.hidenames .ncard b{visibility:hidden}
+.overlay{position:fixed;inset:64px 0 0 0;background:rgba(43,35,80,.55);display:none;place-items:center;z-index:25;padding:16px}
+.overlay.open{display:grid}
+.ocard{background:#fff;border-radius:36px;padding:22px 30px 26px;text-align:center;max-width:560px;width:100%;box-shadow:0 30px 60px rgba(43,35,80,.35);animation:pop .45s}
+.ocard .wmon{width:min(34vh,280px);height:min(40vh,330px);margin:0 auto}
+.ocard h2{font:700 clamp(44px,8vw,78px)/1 Fredoka;margin:6px 0 16px;word-break:break-word}
+.ocard textarea{width:100%;min-height:240px;border:2px solid var(--line);border-radius:18px;padding:12px;font:700 16px Nunito;resize:vertical}
+.ocard label{display:flex;gap:8px;align-items:center;justify-content:center;font-weight:800;margin:8px 0}
+.ocard .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:40}
+
+@media (max-width:900px){.hero{grid-template-columns:1fr;padding:28px 24px 0}.grid3,.tips{grid-template-columns:1fr 1fr}.pcards{grid-template-columns:1fr 1fr}}
+@media (max-width:1000px){.chip .t{display:none}}@media (max-width:640px){.grid2,.grid3,.tips,.pcards{grid-template-columns:1fr}.tb-title .age{display:none}.tb-title b{font-size:19px}.meter{right:12px;width:38px}.tbag{font-size:20px}.tbag svg{width:34px;height:34px}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+</style>
+</head>
+<body>
+<canvas id="confetti"></canvas>
+
+<header id="tb">
+  <a class="tb-back" href="#">← All tools</a>
+  <div class="tb-title"><b id="tbTitle"></b><span class="age" id="tbAge"></span></div>
+  <div class="tb-act"><button class="chip" id="bSound">🔊 <span class="t">Sound</span></button><button class="chip" id="bVoice">🗣️ <span class="t">Voice</span></button><button class="chip" id="bFull">⛶ <span class="t">Full screen</span></button></div>
+</header>
+
+<!-- ================= HOME ================= -->
+<main class="view on" id="v-home">
+  <div class="home-wrap">
+    <section class="hero">
+      <div>
+        <div class="kick">Little tools for big classrooms</div>
+        <h1>Monster Classroom</h1>
+        <p>Five friendly monsters to help with noise, tidying up, number sense, space and taking turns. Open it on the board and press start.</p>
+      </div>
+      <div class="hero-mons" id="heroMons"></div>
+    </section>
+    <div class="legend" id="legend"></div>
+
+    <h2 class="sec-h">For every class</h2>
+    <p class="sec-sub">Use these every day, from nursery to the last year of primary.</p>
+    <div class="grid2" id="gridAll"></div>
+
+    <h2 class="sec-h">By age</h2>
+    <p class="sec-sub">One monster for each stage of the school.</p>
+    <div class="grid3" id="gridAge"></div>
+
+    <div class="tips">
+      <div class="tip"><b>On the board</b><span>Press <b>Full screen</b> and use the <b>space bar</b> for the main action in every tool.</span></div>
+      <div class="tip"><b>Nothing leaves the room</b><span>No accounts, no tracking. The microphone only measures loudness. Nothing is recorded or sent.</span></div>
+      <div class="tip"><b>Names stay here</b><span>Class names are stored only in this browser on this device. You can clear them at any time.</span></div>
+    </div>
+  </div>
+  <footer><span>Monster Classroom · made with vibe coding</span><span>An example by <a href="https://aivoordocenten.nl" target="_blank" rel="noopener">AI voor Docenten</a></span></footer>
+</main>
+
+<!-- ================= NOISE ================= -->
+<section class="view tool sleep" id="v-noise">
+  <div class="stage">
+    <div class="bubble" id="nBubble">Press start. Can you keep me asleep?</div>
+    <div class="nmon-wrap"><div id="nMon"></div><div class="zzz" id="nZzz"><span>z</span><span>z</span><span>Z</span></div></div>
+    <div class="stars" id="nStars"></div>
+    <div class="starbar"><span>Next star</span><div><i id="nBar"></i></div><span id="nTotal"></span></div>
+    <div class="meter" aria-hidden="true"><div class="mcover" id="nCover"></div><div class="mthr" id="nThr"><span>too loud</span></div></div>
+    <div class="nmsg" id="nMsg" style="display:none"></div>
+  </div>
+  <div class="dock">
+    <button class="btn big" id="nStart">🎤 Start listening</button>
+    <div class="ctl">Activity<div class="seg" id="nPre"><button data-v="28">Silent work</button><button data-v="48">Quiet talk</button><button data-v="68">Group work</button></div></div>
+    <div class="ctl">Too loud at<input type="range" id="nThrIn" min="10" max="95"></div>
+    <div class="ctl">Microphone sensitivity<input type="range" id="nSens" min="1" max="10"></div>
+    <div class="ctl">A star every<div class="seg" id="nEvery"><button data-v="20">20 s</button><button data-v="30">30 s</button><button data-v="60">1 min</button><button data-v="120">2 min</button></div></div>
+    <button class="btn" id="nReset">Reset stars</button>
+    <label class="ctl" id="nDemoWrap" style="display:none">Test without microphone<input type="range" id="nDemo" min="0" max="100" value="10"></label>
+  </div>
+</section>
+
+<!-- ================= TIDY ================= -->
+<section class="view tool" id="v-tidy">
+  <div class="scene" id="tScene">
+    <svg class="cloud" style="top:8%;animation-duration:55s" viewBox="0 0 160 70"><path d="M20 60a20 20 0 0 1 8-38 28 28 0 0 1 52-8 24 24 0 0 1 42 10 22 22 0 0 1 18 36z" fill="#fff"/></svg>
+    <svg class="cloud" style="top:20%;width:110px;animation-duration:75s;animation-delay:-30s" viewBox="0 0 160 70"><path d="M20 60a20 20 0 0 1 8-38 28 28 0 0 1 52-8 24 24 0 0 1 42 10 22 22 0 0 1 18 36z" fill="#fff"/></svg>
+    <svg class="hills" viewBox="0 0 1000 200" preserveAspectRatio="none"><path d="M0 200 V120 Q120 30 260 110 T540 90 T820 70 T1000 100 V200Z" fill="#B7E39A"/><path d="M0 200 V160 Q200 90 380 150 T760 130 T1000 140 V200Z" fill="#A2D982"/></svg>
+    <div class="ground"></div><div class="trail"></div>
+    <div class="home" id="tHome"></div>
+    <div id="tToys"></div>
+    <div class="tmon" id="tMon"><div class="in"></div></div>
+    <div class="tclock" id="tClock">2:00</div>
+    <div class="tbag" id="tBagWrap"></div>
+    <div class="tdone">All tidy! Well done!</div>
+  </div>
+  <div class="dock">
+    <button class="btn big pink" id="tGo">▶ Start</button>
+    <button class="btn" id="tReset">↺ Start again</button>
+    <div class="ctl">How long?<div class="seg" id="tDur"><button data-v="60">1 min</button><button data-v="120">2 min</button><button data-v="180">3 min</button><button data-v="300">5 min</button></div></div>
+    <div class="ctl">Music<div class="seg" id="tMus"><button data-v="1">On</button><button data-v="0">Off</button></div></div>
+    <div class="ctl">Clock<div class="seg" id="tClk"><button data-v="1">Show</button><button data-v="0">Hide</button></div></div>
+  </div>
+</section>
+
+<!-- ================= TEN FRAME ================= -->
+<section class="view tool" id="v-ten">
+  <div class="stage">
+    <div class="fq" id="fQ">How many monsters?</div>
+    <div class="fboard" id="fBoard"></div>
+    <div class="fans" id="fAns"></div>
+  </div>
+  <div class="dock">
+    <button class="btn big teal" id="fGo">⚡ Flash!</button>
+    <button class="btn" id="fRev">👀 Show me</button>
+    <div class="ctl">Numbers<div class="seg" id="fRange"><button data-v="1-5">1–5</button><button data-v="0-10">0–10</button><button data-v="1-20">1–20</button></div></div>
+    <div class="ctl">Show as<div class="seg" id="fShow"><button data-v="frame">Ten frame</button><button data-v="dice">Dice</button><button data-v="scatter">Scattered</button></div></div>
+    <div class="ctl">Flash for<div class="seg" id="fFlash"><button data-v="1">1 s</button><button data-v="2">2 s</button><button data-v="3">3 s</button><button data-v="0">Keep</button></div></div>
+    <div class="ctl">Question<div class="seg" id="fQs"><button data-v="how">How many?</button><button data-v="more">Make 10</button></div></div>
+  </div>
+</section>
+
+<!-- ================= PLANETS ================= -->
+<section class="view tool" id="v-planets">
+  <div class="pl-wrap">
+    <div class="pl-head">
+      <h2>If Neptune is</h2>
+      <div class="seg" id="pDist"><button data-v="20">20 m</button><button data-v="50">50 m</button><button data-v="100">100 m</button><button data-v="200">200 m</button><button data-v="400">400 m</button></div>
+      <input type="number" id="pCustom" min="5" max="5000" placeholder="other…" aria-label="Your own distance in metres">
+      <h2>from the Sun…</h2>
+    </div>
+    <p class="pl-sub" id="pSub"></p>
+    <div class="ptrack" id="pTrackWrap"><span class="lbl">The whole solar system</span><div id="pTrack"></div><div class="walker" id="pWalk"><div class="in"></div></div></div>
+    <div class="ptrack" id="pZoomWrap"><span class="lbl">Zoom: the four inner planets</span><div id="pZoom"></div><div class="walker" id="pWalk2"><div class="in"></div></div></div>
+    <div class="pl-read">
+      <button class="btn big orange" id="pGo">🚶 Walk!</button>
+      <button class="btn dark" id="pReset">↺ Back to the Sun</button>
+      <div class="num"><small>Walked</small><span id="pM">0 m</span></div>
+      <div class="num"><small>Children's steps</small><span id="pSt">0</span></div>
+      <div class="pl-reach" id="pReach"></div>
+      <button class="btn dark" id="pPrint" style="margin-left:auto">🖨️ Print planet signs</button>
+    </div>
+    <div class="pcards" id="pCards"></div>
+    <p class="pl-note">Distances are average distances from the Sun. A child's step is counted as 50 cm. On the tracks the planets are drawn much bigger than they really are, otherwise you could not see them. The cards show their real size at this scale.</p>
+  </div>
+</section>
+
+<!-- ================= NAMES ================= -->
+<section class="view tool" id="v-names">
+  <div class="ntop">
+    <button class="btn big" id="gGo">🎲 Pick a monster!</button>
+    <span class="ncount" id="gCount"></span>
+    <button class="btn" id="gReset">↺ Everyone back</button>
+    <button class="btn" id="gEdit">✏️ Edit class</button>
+    <button class="btn" id="gHide">Hide names</button>
+  </div>
+  <div class="ngrid" id="gGrid"></div>
+  <div class="overlay" id="gWin"><div class="ocard"><div class="wmon" id="gWinMon"></div><h2 id="gWinName"></h2><div class="row"><button class="btn big" id="gAgain">🎲 Pick again</button><button class="btn" id="gClose">Back to the class</button></div></div></div>
+  <div class="overlay" id="gDrawer"><div class="ocard" style="text-align:left"><h2 style="font-size:34px;text-align:center">Your class</h2><p style="margin:0 0 8px;font-weight:700;color:var(--muted)">One name per line. Each name gets its own monster. Names are saved only in this browser.</p><textarea id="gText" spellcheck="false"></textarea><label><input type="checkbox" id="gNoRep"> Everyone gets a turn before anyone is picked again</label><div class="row"><button class="btn big" id="gSave">Save class</button><button class="btn" id="gCancel">Cancel</button><button class="btn" id="gClear">Clear all names</button></div></div></div>
+</section>
+
+<div id="printSigns"></div>
+
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
+function hash(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+const store={get(k,d){try{const v=localStorage.getItem('monsterclass.'+k);return v===null?d:JSON.parse(v);}catch(e){return d;}},set(k,v){try{localStorage.setItem('monsterclass.'+k,JSON.stringify(v));}catch(e){}}};
+
+/* ================= monster generator ================= */
+const PAL=['#8BD346','#9B6BFF','#4CB8FF','#FF7EB6','#FF9F43','#2ED3B7','#FFC93C','#FF6B6B'];
+function shade(hex,amt){const c=parseInt(hex.slice(1),16);const f=v=>clamp(v+amt,0,255);return '#'+((1<<24)|(f(c>>16)<<16)|(f(c>>8&255)<<8)|f(c&255)).toString(16).slice(1);}
+const SH=[
+ {b:'<circle cx="100" cy="114" r="64"/>',t:50,s:[40,160],ch:[66,134]},
+ {b:'<path d="M38 150C28 92 60 44 100 44s72 48 62 106c-5 26-119 26-124 0z"/>',t:44,s:[38,162],ch:[64,136]},
+ {b:'<rect x="56" y="40" width="88" height="140" rx="44"/>',t:40,s:[56,144],ch:[72,128]},
+ {b:'<path d="M100 40c30 0 40 35 45 60 25 20 23 75-45 75S30 120 55 100c5-25 15-60 45-60z"/>',t:40,s:[42,158],ch:[66,134]}];
+const EYES={1:[[100,94,24]],2:[[78,92,16],[122,92,16]],3:[[72,98,13],[100,80,13],[128,98,13]]};
+function monster(seed,o){o=o||{};const R=mulberry32(typeof seed==='number'?seed:hash(String(seed).toLowerCase()));
+  const col=o.color||PAL[R()*PAL.length|0],sh=o.shape!=null?o.shape:R()*4|0,ne=o.eyes||[1,2,2,2,3][R()*5|0],ex=o.extra!=null?o.extra:R()*5|0,spots=o.spots!=null?o.spots:R()<.45;
+  const acc=PAL[(PAL.indexOf(col)+3+PAL.length)%PAL.length]||'#FFC93C',mood=o.mood||'happy',dk=shade(col,-60),arm=shade(col,-22),lt=shade(col,70),S=SH[sh],t=S.t;
+  let g='';
+  if(ex===0)g+=`<path d="M74 ${t+16}Q60 ${t-6} 62 ${t-26}Q80 ${t-12} 90 ${t+8}z" fill="#FFF1D0" stroke="${dk}" stroke-width="3"/><path d="M126 ${t+16}Q140 ${t-6} 138 ${t-26}Q120 ${t-12} 110 ${t+8}z" fill="#FFF1D0" stroke="${dk}" stroke-width="3"/>`;
+  if(ex===1)g+=`<path d="M88 ${t+8}Q84 ${t-12} 72 ${t-24}M112 ${t+8}Q116 ${t-12} 128 ${t-24}" stroke="${dk}" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="71" cy="${t-26}" r="9" fill="${acc}"/><circle cx="129" cy="${t-26}" r="9" fill="${acc}"/>`;
+  if(ex===2)g+=`<circle cx="${S.s[0]+22}" cy="${t+20}" r="19" fill="${col}"/><circle cx="${S.s[0]+22}" cy="${t+20}" r="9" fill="${lt}"/><circle cx="${S.s[1]-22}" cy="${t+20}" r="19" fill="${col}"/><circle cx="${S.s[1]-22}" cy="${t+20}" r="9" fill="${lt}"/>`;
+  const up=mood==='cheer';const ay=up?96:132;
+  g+=`<ellipse cx="${S.s[0]+2}" cy="${ay}" rx="12" ry="22" fill="${arm}" transform="rotate(${up?-35:28} ${S.s[0]+2} ${ay})"/><ellipse cx="${S.s[1]-2}" cy="${ay}" rx="12" ry="22" fill="${arm}" transform="rotate(${up?35:-28} ${S.s[1]-2} ${ay})"/>`;
+  g+=`<ellipse cx="76" cy="180" rx="18" ry="9" fill="${dk}"/><ellipse cx="124" cy="180" rx="18" ry="9" fill="${dk}"/>`;
+  g+=S.b.replace('/>',` fill="${col}"/>`);
+  if(ex===3){for(let x=74;x<=126;x+=13)g+=`<path d="M${x-7} ${t+9}L${x} ${t-13}L${x+7} ${t+9}z" fill="${acc}"/>`;}
+  g+=`<ellipse cx="100" cy="152" rx="32" ry="20" fill="${lt}" opacity=".55"/>`;
+  if(spots)g+=`<circle cx="${S.s[0]+18}" cy="140" r="6" fill="${dk}" opacity=".22"/><circle cx="${S.s[1]-16}" cy="150" r="5" fill="${dk}" opacity=".22"/><circle cx="${S.s[0]+28}" cy="162" r="4" fill="${dk}" opacity=".22"/>`;
+  for(const [x,y,r] of EYES[ne]){
+    if(mood==='sleep'){g+=`<path d="M${x-r*.75} ${y}Q${x} ${y+r*.75} ${x+r*.75} ${y}" stroke="#241b3a" stroke-width="${Math.max(3.5,r*.28).toFixed(1)}" fill="none" stroke-linecap="round"/>`;continue;}
+    const pr=mood==='angry'?r*.36:mood==='awake'?r*.42:r*.52;
+    g+=`<g class="eye" style="animation-delay:${(R()*4).toFixed(2)}s"><circle cx="${x}" cy="${y}" r="${r}" fill="#fff" stroke="${dk}" stroke-width="2"/><circle cx="${x+r*.08}" cy="${y+r*.06}" r="${pr.toFixed(1)}" fill="#241b3a"/><circle cx="${x-r*.12}" cy="${y-r*.18}" r="${(r*.16).toFixed(1)}" fill="#fff"/></g>`;
+    if(mood==='angry'){const a=x<100?[x-r,y-r-12,x+r,y-r-2]:x>100?[x-r,y-r-2,x+r,y-r-12]:[x-r,y-r-6,x+r,y-r-6];g+=`<path d="M${a[0]} ${a[1]}L${a[2]} ${a[3]}" stroke="#241b3a" stroke-width="6" stroke-linecap="round"/>`;}}
+  if(mood==='happy'||mood==='cheer'||mood==='awake')g+=`<circle cx="${S.ch[0]}" cy="120" r="9" fill="#FF6F9C" opacity=".35"/><circle cx="${S.ch[1]}" cy="120" r="9" fill="#FF6F9C" opacity=".35"/>`;
+  const my=132;
+  if(mood==='sleep')g+=`<ellipse cx="100" cy="${my}" rx="7" ry="5" fill="#241b3a"/>`;
+  else if(mood==='angry')g+=`<path d="M72 ${my-6}Q100 ${my-16} 128 ${my-6}Q124 ${my+26} 100 ${my+26}Q76 ${my+26} 72 ${my-6}z" fill="#3a1630"/><path d="M78 ${my-8}l7 11 7-12 8 12 8-12 7 12 7-11z" fill="#fff"/>`;
+  else if(mood==='cheer')g+=`<path d="M72 ${my-8}Q100 ${my+36} 128 ${my-8}z" fill="#3a1630"/><ellipse cx="100" cy="${my+12}" rx="11" ry="7" fill="#FF7E9D"/>`;
+  else if(mood==='awake')g+=`<path d="M86 ${my}Q100 ${my+9} 114 ${my}" stroke="#241b3a" stroke-width="5" fill="none" stroke-linecap="round"/>`;
+  else g+=`<path d="M78 ${my-4}Q100 ${my+18} 122 ${my-4}" stroke="#241b3a" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M93 ${my+5}h10l-5 8z" fill="#fff"/>`;
+  return `<svg class="monster" viewBox="0 -36 200 236" aria-hidden="true">${g}</svg>`;}
+
+/* ================= sound, voice, confetti ================= */
+let AC=null;function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)();}catch(e){return null;}}if(AC.state==='suspended')AC.resume();return AC;}
+let soundOn=store.get('sound',true),voiceOn=store.get('voice',true);
+function note(f,dur,vol,type,at){if(!soundOn)return;const c=ac();if(!c)return;const t=at||c.currentTime;const o=c.createOscillator(),g=c.createGain();o.type=type||'sine';o.frequency.value=f;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(vol||.12,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+dur+.05);}
+const SFX={tick(){note(1100,.045,.07,'square');},pop(){note(620,.09,.12,'triangle');note(930,.08,.08,'triangle',(ac()||{currentTime:0}).currentTime+.05);},
+  chime(){const c=ac();if(!c)return;const t=c.currentTime;[1047,1319,1568].forEach((f,i)=>note(f,.5,.1,'sine',t+i*.09));},
+  fanfare(){const c=ac();if(!c)return;const t=c.currentTime;[523,659,784,1047,784,1047].forEach((f,i)=>note(f,i>4?.6:.22,.13,'triangle',t+i*.13));}};
+function say(txt){if(!voiceOn||!('speechSynthesis' in window))return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(txt);u.lang='en-GB';const vs=speechSynthesis.getVoices();const v=vs.find(v=>/en[-_]GB/i.test(v.lang))||vs.find(v=>/^en/i.test(v.lang));if(v)u.voice=v;u.rate=.9;u.pitch=1.1;speechSynthesis.speak(u);}catch(e){}}
+const cv=$('#confetti'),cx=cv.getContext('2d');let parts=[],cvOn=false;
+function confetti(n){const W=innerWidth,H=innerHeight;for(let i=0;i<(n||160);i++)parts.push({x:W*(.2+Math.random()*.6),y:H*.32+Math.random()*40,vx:(Math.random()-.5)*14,vy:-Math.random()*13-5,w:Math.random()*8+6,h:Math.random()*5+4,c:PAL[i%PAL.length],a:Math.random()*6,va:(Math.random()-.5)*.4,life:0});}
+function drawConfetti(dt){if(!parts.length){if(cvOn){cx.clearRect(0,0,cv.width,cv.height);cvOn=false;}return;}cvOn=true;if(cv.width!==innerWidth||cv.height!==innerHeight){cv.width=innerWidth;cv.height=innerHeight;}cx.clearRect(0,0,cv.width,cv.height);const k=dt*60;
+  parts=parts.filter(p=>{p.vy+=.35*k;p.vx*=Math.pow(.99,k);p.x+=p.vx*k;p.y+=p.vy*k;p.a+=p.va*k;p.life+=dt;cx.save();cx.translate(p.x,p.y);cx.rotate(p.a);cx.fillStyle=p.c;cx.fillRect(-p.w/2,-p.h/2,p.w,p.h);cx.restore();return p.y<innerHeight+40&&p.life<6;});}
+function seg(id,val,cb){const el=$(id);const set=v=>$$(id+' button').forEach(b=>b.classList.toggle('on',b.dataset.v===String(v)));set(val);el.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;set(b.dataset.v);cb(b.dataset.v);});return set;}
+
+/* ================= tools & home ================= */
+const AGES={all:{t:'All ages',c:'#9B6BFF'},nursery:{t:'Nursery & Reception · 3–5',c:'#FF5FA2'},lower:{t:'Lower primary · 4–7',c:'#18b89c'},upper:{t:'Upper primary · 8–11',c:'#3aa0ef'}};
+const TOOLS={
+ noise:{t:'Noise Monster',age:'all',sub:'Keep the monster asleep! It wakes up and grows when the class gets too loud. Quiet time earns stars.',bg:'#ECE6FF'},
+ names:{t:'Monster Name Picker',age:'all',sub:'Every child gets their own little monster. Who is next? Fair turns for everyone.',bg:'#FFE9D6'},
+ tidy:{t:'Tidy-up Monster',age:'nursery',sub:'Tidy up before the monster gets home. With music and a big party at the end.',bg:'#FFE3EF'},
+ ten:{t:'Ten Frame Flash',age:'lower',sub:'Flash, look, say! How many monsters did you see? And how many more make ten?',bg:'#DDF7F1'},
+ planets:{t:'Planet Walk',age:'upper',sub:'Walk the solar system to scale across your playground. Earth is smaller than a grain of sand!',bg:'#1E2557'}};
+function fCounter(x,y,col,s){return `<g transform="translate(${x} ${y}) scale(${s||1})"><g class="cnt"><path d="M-25-20-29-40-11-31zM25-20 29-40 11-31z" fill="${shade(col,-30)}"/><circle r="34" fill="${col}"/><circle cx="-12" cy="-6" r="10" fill="#fff"/><circle cx="12" cy="-6" r="10" fill="#fff"/><circle cx="-10" cy="-5" r="5" fill="#241b3a"/><circle cx="14" cy="-5" r="5" fill="#241b3a"/><path d="M-11 13Q0 22 11 13" stroke="#241b3a" stroke-width="3.5" fill="none" stroke-linecap="round"/></g></g>`;}
+const ART={
+ noise:()=>`<div class="m">${monster(3,{shape:0,eyes:1,extra:0,color:'#9B6BFF',mood:'sleep',spots:false})}</div><div class="zz">z z Z</div>`,
+ names:()=>`<div style="display:flex;align-items:flex-end;gap:0">${['Mia','Kofi','Yuki'].map((n,i)=>`<div class="m" style="width:${i===1?150:118}px;animation-delay:${i*.3}s">${monster(n,{mood:i===1?'cheer':'happy'})}</div>`).join('')}</div>`,
+ tidy:()=>`<div class="m" style="width:160px">${monster(7,{shape:3,eyes:2,extra:1,color:'#FF9F43'})}</div><svg viewBox="0 0 60 60" style="position:absolute;left:22%;bottom:16px;width:58px"><rect x="6" y="6" width="48" height="48" rx="9" fill="#FF6B6B"/><text x="30" y="43" text-anchor="middle" font-family="Fredoka" font-weight="700" font-size="32" fill="#fff">A</text></svg><svg viewBox="0 0 60 60" style="position:absolute;right:22%;bottom:16px;width:52px"><circle cx="30" cy="30" r="26" fill="#4CB8FF"/><path d="M4 30h52M30 4c-14 14-14 38 0 52" stroke="#fff" stroke-width="5" fill="none"/></svg>`,
+ ten:()=>{let s=`<rect x="0" y="0" width="480" height="192" rx="14" fill="#fff" stroke="#2B2350" stroke-width="5"/>`;for(let i=1;i<5;i++)s+=`<path d="M${i*96} 0V192" stroke="#2B2350" stroke-width="4"/>`;s+=`<path d="M0 96H480" stroke="#2B2350" stroke-width="4"/>`;for(let k=0;k<7;k++)s+=fCounter((k%5)*96+48,Math.floor(k/5)*96+52,'#2ED3B7');return `<svg viewBox="-10 -30 500 232" style="width:78%;margin-bottom:22px">${s}</svg>`;},
+ planets:()=>`<svg viewBox="0 0 300 200" style="position:absolute;inset:0;width:100%;height:100%"><circle cx="-30" cy="100" r="80" fill="#FFC93C"/><circle cx="-30" cy="100" r="95" fill="#FFC93C" opacity=".2"/><circle cx="90" cy="70" r="7" fill="#3D8BFD"/><circle cx="235" cy="52" r="18" fill="#E8D08F"/><ellipse cx="235" cy="52" rx="32" ry="7" fill="none" stroke="#f3e2a9" stroke-width="3" transform="rotate(-14 235 52)"/><circle cx="160" cy="40" r="3" fill="#E0663F"/><circle cx="40" cy="30" r="1.5" fill="#fff"/><circle cx="270" cy="150" r="1.5" fill="#fff"/><circle cx="200" cy="120" r="1" fill="#fff"/></svg><div class="m" style="width:130px;position:relative">${monster(12,{shape:2,eyes:3,extra:1,color:'#2ED3B7'})}</div>`};
+function card(id){const T=TOOLS[id],A=AGES[T.age];return `<a class="tcard" href="#${id}"><div class="art" style="background:${T.bg}">${ART[id]()}</div><div class="body"><span class="age" style="background:${A.c};align-self:flex-start">${A.t}</span><h3>${T.t}</h3><p>${T.sub}</p><span class="go">Open →</span></div></a>`;}
+$('#gridAll').innerHTML=card('noise')+card('names');
+$('#gridAge').innerHTML=card('tidy')+card('ten')+card('planets');
+$('#legend').innerHTML=Object.values(AGES).map(a=>`<span class="age" style="background:${a.c}">${a.t}</span>`).join('');
+$('#heroMons').innerHTML=[monster('Bo',{shape:1,eyes:2,extra:1,color:'#FFC93C'}),monster('Zip',{shape:2,eyes:3,extra:3,color:'#2ED3B7',mood:'cheer'}),monster('Gus',{shape:0,eyes:1,extra:0,color:'#FF7EB6'})].map(m=>`<div>${m}</div>`).join('');
+
+/* ================= router & toolbar ================= */
+let cur=null;
+function route(id){if(typeof id!=='string')id=location.hash.replace('#','');const next=TOOLS[id]?id:null;if(next===cur)return;
+  if(cur&&TOOLS[cur].leave)TOOLS[cur].leave();cur=next;
+  $$('.view').forEach(v=>v.classList.toggle('on',v.id===(next?'v-'+next:'v-home')));
+  document.body.classList.toggle('in-tool',!!next);
+  if(next){const T=TOOLS[next],A=AGES[T.age];$('#tbTitle').textContent=T.t;$('#tbAge').textContent=A.t;$('#tbAge').style.background=A.c;document.title=T.t+' · Monster Classroom';if(T.enter)T.enter();}
+  else document.title='Monster Classroom';
+  window.scrollTo(0,0);}
+addEventListener('hashchange',()=>route());
+document.addEventListener('click',e=>{const a=e.target.closest('a[href^="#"]');if(!a)return;const id=a.getAttribute('href').slice(1);try{if(location.hash.slice(1)!==id)history.pushState(null,'',id?'#'+id:location.pathname+location.search);}catch(err){}e.preventDefault();route(id);});
+addEventListener('popstate',()=>route());
+function setSound(v){soundOn=v;store.set('sound',v);$('#bSound').classList.toggle('off',!v);}
+function setVoice(v){voiceOn=v;store.set('voice',v);$('#bVoice').classList.toggle('off',!v);if(!v&&'speechSynthesis' in window)speechSynthesis.cancel();}
+$('#bSound').onclick=()=>{setSound(!soundOn);ac();};$('#bVoice').onclick=()=>setVoice(!voiceOn);setSound(soundOn);setVoice(voiceOn);
+$('#bFull').onclick=()=>{try{if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen();}catch(e){}};
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(b&&e.detail>0)b.blur();});
+addEventListener('keydown',e=>{if(/INPUT|TEXTAREA|SELECT|BUTTON/.test(e.target.tagName))return;const T=TOOLS[cur];if(!T)return;
+  if(e.key===' '&&T.space){e.preventDefault();ac();T.space();}else if(e.key==='Enter'&&T.enterKey){e.preventDefault();T.enterKey();}else if(e.key==='Escape'&&T.esc){T.esc();}});
+
+/* ================= 1. NOISE MONSTER ================= */
+const N={on:false,demo:false,level:0,thr:store.get('nthr',48),sens:store.get('nsens',5),every:store.get('nevery',30),state:'sleep',pend:'sleep',pendT:0,calm:0,stars:0,clock:0,stream:null,src:null,an:null,buf:null};
+const NCOL={sleep:'#8E7CF0',awake:'#9B6BFF',angry:'#FF5A5F'};
+const NTXT={sleep:'Zzz… shhh, I\'m sleeping.',awake:'Hmm? I can hear you…',angry:'TOO LOUD! I\'m awake!'};
+function nRender(){$('#nMon').innerHTML=monster(3,{shape:0,eyes:1,extra:0,color:NCOL[N.state],spots:false,mood:N.state==='sleep'?'sleep':N.state==='angry'?'angry':'awake'});
+  $('#nZzz').style.display=N.state==='sleep'?'':'none';const v=$('#v-noise');v.classList.remove('sleep','awake','angry');v.classList.add(N.state);
+  $('#nBubble').textContent=(N.on||N.demo)?NTXT[N.state]:'Press start. Can you keep me asleep?';}
+function nStars(){const on=N.stars===0?0:((N.stars-1)%5)+1;const star='<svg class="star{c}" viewBox="0 0 48 48"><path d="M24 4l6 13 14 2-10 10 2 14-12-7-12 7 2-14L4 19l14-2z" stroke-linejoin="round"/></svg>';
+  $('#nStars').innerHTML=[0,1,2,3,4].map(i=>star.replace('{c}',i<on?' on':'')).join('');$('#nTotal').textContent=N.stars?`${N.stars} ★ in total`:'';}
+function nThr(){$('#nThr').style.bottom=N.thr+'%';$('#nThrIn').value=N.thr;}
+async function nStart(){ac();if(N.on){nStop();nRender();return;}
+  try{if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw new Error('no-media');
+    const s=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
+    const c=ac();N.stream=s;N.src=c.createMediaStreamSource(s);N.an=c.createAnalyser();N.an.fftSize=2048;N.buf=new Float32Array(N.an.fftSize);const mute=c.createGain();mute.gain.value=0;N.src.connect(N.an);N.an.connect(mute);mute.connect(c.destination);
+    N.on=true;N.demo=false;$('#nDemoWrap').style.display='none';$('#nMsg').style.display='none';$('#nStart').textContent='⏸ Stop listening';N.calm=0;nRender();}
+  catch(e){N.demo=true;$('#nDemoWrap').style.display='';$('#nMsg').style.display='';$('#nMsg').textContent='No microphone available or permission was not given. You can try the monster with the test slider below.';nRender();}}
+function nStop(){if(N.stream)N.stream.getTracks().forEach(t=>t.stop());if(N.src)try{N.src.disconnect();}catch(e){}N.stream=N.src=N.an=null;N.on=false;$('#nStart').textContent='🎤 Start listening';}
+function nStar(){N.stars++;SFX.chime();nStars();if(N.stars%5===0){confetti(180);SFX.fanfare();say('Five stars! Well done, everyone!');}}
+TOOLS.noise.enter=()=>{nRender();nStars();nThr();};
+TOOLS.noise.leave=()=>{nStop();N.demo=false;N.state='sleep';N.level=0;};
+TOOLS.noise.space=()=>nStart();
+TOOLS.noise.frame=dt=>{N.clock+=dt;let raw=0;
+  if(N.on&&N.an){N.an.getFloatTimeDomainData(N.buf);let s=0;for(let i=0;i<N.buf.length;i++)s+=N.buf[i]*N.buf[i];const db=20*Math.log10(Math.sqrt(s/N.buf.length)+1e-9);raw=clamp((db+62+(N.sens-5)*4)/52*100,0,100);}
+  else if(N.demo)raw=+$('#nDemo').value;
+  N.level+=(raw-N.level)*(raw>N.level?1-Math.exp(-dt*14):1-Math.exp(-dt*2.2));
+  if(N.on||N.demo){const want=N.level>=N.thr?'angry':N.level>=N.thr*.55?'awake':'sleep';if(want!==N.pend){N.pend=want;N.pendT=0;}else N.pendT+=dt;
+    const need=want==='angry'?.3:want==='sleep'?1.6:.5;if(N.pend!==N.state&&N.pendT>=need){N.state=N.pend;nRender();}
+    if(N.state==='angry')N.calm=0;else{N.calm+=dt;if(N.calm>=N.every){N.calm=0;nStar();}}}
+  $('#nCover').style.height=(100-N.level)+'%';$('#nBar').style.width=clamp(N.calm/N.every*100,0,100)+'%';
+  const sc=1+N.level/100*.32+(N.state==='angry'?.1:0),shk=N.state==='angry'?(Math.random()-.5)*14*N.level/100:0,br=N.state==='sleep'?Math.sin(N.clock*1.6)*.025:0;
+  $('#nMon').style.transform=`translateX(${shk.toFixed(1)}px) scale(${(sc+br).toFixed(3)},${(sc-br).toFixed(3)})`;};
+$('#nStart').onclick=nStart;
+$('#nThrIn').oninput=e=>{N.thr=+e.target.value;store.set('nthr',N.thr);nThr();setPre(-1);};
+$('#nSens').value=N.sens;$('#nSens').oninput=e=>{N.sens=+e.target.value;store.set('nsens',N.sens);};
+const setPre=seg('#nPre',N.thr,v=>{N.thr=+v;store.set('nthr',N.thr);nThr();});
+seg('#nEvery',N.every,v=>{N.every=+v;store.set('nevery',N.every);N.calm=0;});
+$('#nReset').onclick=()=>{N.stars=0;N.calm=0;nStars();};
+
+/* ================= 2. TIDY-UP MONSTER ================= */
+const TOYS=[
+ {p:.14,s:'<svg viewBox="0 0 60 60"><rect x="6" y="6" width="48" height="48" rx="9" fill="#FF6B6B"/><text x="30" y="43" text-anchor="middle" font-family="Fredoka" font-weight="700" font-size="32" fill="#fff">A</text></svg>'},
+ {p:.3,s:'<svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="26" fill="#4CB8FF"/><path d="M4 30h52M30 4c-14 14-14 38 0 52" stroke="#fff" stroke-width="5" fill="none"/></svg>'},
+ {p:.46,s:'<svg viewBox="0 0 60 60"><circle cx="16" cy="14" r="9" fill="#B07A4F"/><circle cx="44" cy="14" r="9" fill="#B07A4F"/><circle cx="30" cy="27" r="19" fill="#C68B5B"/><ellipse cx="30" cy="33" rx="8" ry="6" fill="#F0D2B0"/><circle cx="23" cy="24" r="2.5" fill="#241b3a"/><circle cx="37" cy="24" r="2.5" fill="#241b3a"/><ellipse cx="30" cy="54" rx="16" ry="6" fill="#C68B5B"/></svg>'},
+ {p:.62,s:'<svg viewBox="0 0 60 60"><path d="M6 40V30l10-12h22l12 12h4v10z" fill="#FFC93C"/><rect x="20" y="21" width="16" height="9" rx="2" fill="#BDE8FF"/><circle cx="17" cy="42" r="7" fill="#2B2350"/><circle cx="45" cy="42" r="7" fill="#2B2350"/></svg>'},
+ {p:.78,s:'<svg viewBox="0 0 60 60"><path d="M30 4l7 17 18 1-14 12 5 18-16-10-16 10 5-18L5 22l18-1z" fill="#9B6BFF" stroke-linejoin="round"/></svg>'}];
+const BAG='<svg viewBox="0 0 60 60"><path d="M10 22h40l-4 30H14z" fill="#E8A65C"/><path d="M10 22h40" stroke="#B87A35" stroke-width="5" stroke-linecap="round"/><path d="M20 22c0-12 20-12 20 0" stroke="#B87A35" stroke-width="4" fill="none"/><path d="M16 32h28M17 42h26" stroke="#C98E47" stroke-width="3"/></svg>';
+const T={dur:store.get('tdur',120),left:0,run:false,done:false,music:store.get('tmusic',true),showClock:store.get('tclock',true),timer:null,next:0,step:0,got:0};
+$('#tHome').innerHTML='<svg viewBox="0 0 220 200"><path d="M8 196Q8 58 110 48q102 10 102 148z" fill="#B98A5E"/><path d="M28 196Q28 78 110 70q82 8 82 126z" fill="#D2A576"/><path d="M82 196v-62q0-30 28-30t28 30v62z" fill="#6B4A2E"/><circle cx="128" cy="160" r="4.5" fill="#FFC93C"/><circle cx="58" cy="122" r="15" fill="#FFF3B0" stroke="#6B4A2E" stroke-width="4"/><path d="M110 48V8" stroke="#6B4A2E" stroke-width="4"/><path d="M110 10l32 9-32 9z" fill="#FF6B6B"/></svg>';
+$('#tToys').innerHTML=TOYS.map((t,i)=>`<div class="toy" id="toy${i}" style="left:${(4+t.p*76).toFixed(1)}%">${t.s}</div>`).join('');
+$('#tMon .in').innerHTML=monster(7,{shape:3,eyes:2,extra:1,color:'#FF9F43'});
+function tPaint(){const p=T.done?1:1-T.left/T.dur;$('#tMon').style.left=(T.done?86:4+p*76)+'%';
+  const m=Math.ceil(T.left),txt=Math.floor(m/60)+':'+String(m%60).padStart(2,'0');$('#tClock').textContent=txt;$('#tClock').style.display=T.showClock?'':'none';
+  $('#tBagWrap').innerHTML=BAG+`<span>${T.got} / ${TOYS.length}</span>`;}
+function tReset(){T.run=false;T.done=false;T.left=T.dur;T.got=0;tMusic(false);$$('.toy').forEach(e=>e.classList.remove('got'));$('#v-tidy').classList.remove('done');$('#tMon').className='tmon';$('#tMon .in').innerHTML=monster(7,{shape:3,eyes:2,extra:1,color:'#FF9F43'});$('#tGo').textContent='▶ Start';tPaint();}
+function tGo(){ac();if(T.done){tReset();return;}T.run=!T.run;$('#tGo').textContent=T.run?'⏸ Pause':'▶ Go on';$('#tMon').classList.toggle('walk',T.run);tMusic(T.run&&T.music);if(T.run&&T.left===T.dur)say("Tidy-up time! Let's help the monster.");}
+function tFinish(){T.run=false;T.done=true;T.left=0;tMusic(false);$('#v-tidy').classList.add('done');$('#tMon').className='tmon party';$('#tMon .in').innerHTML=monster(7,{shape:3,eyes:2,extra:1,color:'#FF9F43',mood:'cheer'});$('#tGo').textContent='↺ Again';confetti(220);SFX.fanfare();setTimeout(()=>say('All tidy! Well done, everyone!'),900);tPaint();}
+const MEL=[0,4,7,4,9,7,4,2,0,2,4,7,4,2,0,-5],BASE=523.25;
+function tMusic(on){clearInterval(T.timer);T.timer=null;if(!on)return;const c=ac();if(!c)return;T.next=c.currentTime+.05;T.step=0;
+  T.timer=setInterval(()=>{const c=ac();while(T.next<c.currentTime+.15){const s=T.step,n=MEL[s%16];note(BASE*Math.pow(2,n/12),.17,.07,'triangle',T.next);if(s%4===0)note((s%8===0?130.81:196),.28,.1,'sine',T.next);if(s%2===1)note(4000,.02,.012,'square',T.next);T.next+=T.left<15?.14:.2;T.step++;}},30);}
+TOOLS.tidy.enter=()=>{if(!T.run&&!T.done)tReset();};
+TOOLS.tidy.leave=()=>{T.run=false;tMusic(false);$('#tMon').classList.remove('walk');$('#tGo').textContent=T.done?'↺ Again':'▶ Go on';};
+TOOLS.tidy.space=tGo;
+TOOLS.tidy.frame=dt=>{if(!T.run)return;T.left-=dt;if(T.left<=0){tFinish();return;}const p=1-T.left/T.dur;
+  TOYS.forEach((t,i)=>{const el=$('#toy'+i);if(p>=t.p&&!el.classList.contains('got')){el.classList.add('got');T.got++;SFX.pop();}});tPaint();};
+$('#tGo').onclick=tGo;$('#tReset').onclick=tReset;
+seg('#tDur',T.dur,v=>{T.dur=+v;store.set('tdur',T.dur);tReset();});
+seg('#tMus',T.music?1:0,v=>{T.music=v==='1';store.set('tmusic',T.music);tMusic(T.run&&T.music);});
+seg('#tClk',T.showClock?1:0,v=>{T.showClock=v==='1';store.set('tclock',T.showClock);tPaint();});
+
+/* ================= 3. TEN FRAME FLASH ================= */
+const WORDS=['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen','twenty'];
+const F={range:store.get('frange','0-10'),show:store.get('fshow','frame'),flash:store.get('fflash',2),q:store.get('fq','how'),n:null,prev:null,phase:'idle',hideT:null,col:'#2ED3B7',pts:null};
+const DP={1:[[1,1]],2:[[0,0],[2,2]],3:[[0,0],[1,1],[2,2]],4:[[0,0],[2,0],[0,2],[2,2]],5:[[0,0],[2,0],[1,1],[0,2],[2,2]],6:[[0,0],[2,0],[0,1],[2,1],[0,2],[2,2]]};
+function fNew(){let [lo,hi]=F.range.split('-').map(Number);if(F.q==='more'){lo=Math.max(1,lo);hi=Math.min(9,hi);}let n,g=0;do{n=lo+Math.floor(Math.random()*(hi-lo+1));}while(n===F.prev&&hi>lo&&g++<20);F.prev=n;F.n=n;F.col=PAL[Math.random()*PAL.length|0];F.pts=null;}
+function tenFrame(n,ghost){const C=96,two=F.range==='1-20'&&F.q!=='more',fr=two?2:1,W=5*C,H=fr*2*C+(fr-1)*34;let s='';
+  for(let f=0;f<fr;f++){const oy=f*(2*C+34);s+=`<rect x="0" y="${oy}" width="${W}" height="${2*C}" rx="16" fill="#fff" stroke="#2B2350" stroke-width="5"/>`;for(let i=1;i<5;i++)s+=`<path d="M${i*C} ${oy}V${oy+2*C}" stroke="#2B2350" stroke-width="4"/>`;s+=`<path d="M0 ${oy+C}H${W}" stroke="#2B2350" stroke-width="4"/>`;}
+  for(let k=0;k<n;k++){const f=Math.floor(k/10),j=k%10;s+=fCounter((j%5)*C+C/2,f*(2*C+34)+Math.floor(j/5)*C+C/2+3,F.col);}
+  if(ghost)for(let k=n;k<10;k++)s+=`<circle cx="${(k%5)*C+C/2}" cy="${Math.floor(k/5)*C+C/2}" r="32" fill="none" stroke="${F.col}" stroke-width="5" stroke-dasharray="9 8"/>`;
+  return `<svg viewBox="-14 -40 ${W+28} ${H+60}">${s}</svg>`;}
+function dice(n){if(n>12)return tenFrame(n);const parts=n===0?[0]:n<=6?[n]:[Math.ceil(n/2),Math.floor(n/2)];const D=220,G=40;let s='';
+  parts.forEach((m,i)=>{const ox=i*(D+G);s+=`<rect x="${ox}" y="0" width="${D}" height="${D}" rx="34" fill="#fff" stroke="#2B2350" stroke-width="6"/>`;(DP[m]||[]).forEach(([c,r])=>s+=fCounter(ox+44+c*66,48+r*64,F.col,.7));});
+  const W=parts.length*D+(parts.length-1)*G;return `<svg viewBox="-14 -30 ${W+28} ${D+50}">${s}</svg>`;}
+function scatter(n){const W=640,H=330;if(!F.pts){F.pts=[];let tries=0;while(F.pts.length<n&&tries<5000){tries++;const p=[44+Math.random()*(W-88),48+Math.random()*(H-90)];if(F.pts.every(q=>Math.hypot(q[0]-p[0],q[1]-p[1])>84))F.pts.push(p);}}
+  return `<svg viewBox="0 0 ${W} ${H}"><rect x="2" y="2" width="${W-4}" height="${H-4}" rx="30" fill="#fff" stroke="#2B2350" stroke-width="5"/>${F.pts.map(p=>fCounter(p[0],p[1],F.col,.9)).join('')}</svg>`;}
+function fDraw(){$('#fQ').textContent=F.q==='more'?'How many more to make 10?':'How many monsters?';const B=$('#fBoard'),A=$('#fAns');
+  if(F.phase==='idle'){B.innerHTML=`<div class="fcover">${monster('flash',{shape:1,eyes:2,extra:2,color:'#2ED3B7'})}</div>`;A.innerHTML='<small>Press Flash! or the space bar</small>';return;}
+  if(F.phase==='hidden'){B.innerHTML=`<div class="fcover">${monster('flash',{shape:1,eyes:2,extra:2,color:'#2ED3B7',mood:'cheer'})}<span>?</span></div>`;A.innerHTML='<small>What did you see? Press space to check.</small>';return;}
+  const n=F.n,mt=F.q==='more';
+  B.innerHTML=mt?tenFrame(n,F.phase==='reveal'):F.show==='dice'?dice(n):F.show==='scatter'?scatter(n):tenFrame(n);
+  A.innerHTML=F.phase==='reveal'?(mt?`${n} + <span style="color:${shade(F.col,-50)}">${10-n}</span> = 10<small>${WORDS[n]} and ${WORDS[10-n]} make ten</small>`:`${n}<small>${WORDS[n]}</small>`):'';}
+function fFlash(){ac();clearTimeout(F.hideT);fNew();F.phase='flash';fDraw();SFX.pop();const ms=F.flash*1000;if(ms>0)F.hideT=setTimeout(()=>{F.phase='hidden';fDraw();},ms);}
+function fReveal(){if(F.n===null)return;clearTimeout(F.hideT);F.phase='reveal';fDraw();SFX.chime();const n=F.n;say(F.q==='more'?`${n} and ${10-n} make ten!`:`${WORDS[n]}!`);}
+TOOLS.ten.enter=()=>fDraw();
+TOOLS.ten.leave=()=>{clearTimeout(F.hideT);if(F.phase==='flash')F.phase='hidden';};
+TOOLS.ten.space=()=>{if(F.phase==='flash'||F.phase==='hidden')fReveal();else fFlash();};
+TOOLS.ten.enterKey=fReveal;
+$('#fGo').onclick=fFlash;$('#fRev').onclick=fReveal;
+seg('#fRange',F.range,v=>{F.range=v;store.set('frange',v);F.phase='idle';F.n=null;fDraw();});
+seg('#fShow',F.show,v=>{F.show=v;store.set('fshow',v);F.pts=null;if(F.phase!=='idle'&&F.phase!=='hidden')fDraw();});
+seg('#fFlash',F.flash,v=>{F.flash=+v;store.set('fflash',F.flash);});
+seg('#fQs',F.q,v=>{F.q=v;store.set('fq',v);F.phase='idle';F.n=null;fDraw();});
+
+/* ================= 4. PLANET WALK ================= */
+const AU_KM=149.6e6,NEP=30.07;
+const PL=[
+ {n:'Mercury',au:.387,d:4879,c:'#B7AFA6',f:'The smallest planet. A year on Mercury lasts only 88 days.'},
+ {n:'Venus',au:.723,d:12104,c:'#E8C27A',f:'The hottest planet. It is hotter than a pizza oven!'},
+ {n:'Earth',au:1,d:12742,c:'#3D8BFD',f:'Our home. The only planet where we know there is life.'},
+ {n:'Mars',au:1.524,d:6779,c:'#E0663F',f:'The red planet. It has the tallest volcano in the solar system.'},
+ {n:'Jupiter',au:5.203,d:139820,c:'#D9A066',f:'The biggest planet. More than 1,300 Earths could fit inside it.'},
+ {n:'Saturn',au:9.537,d:116460,c:'#E8D08F',ring:1,f:'Famous for its rings, made of ice and rock.'},
+ {n:'Uranus',au:19.19,d:50724,c:'#8FE3E8',f:'It spins on its side, like a ball rolling around the Sun.'},
+ {n:'Neptune',au:30.07,d:49244,c:'#4C6EF5',f:'The windiest planet. Its storms are faster than a jet plane.'}];
+const SUN={n:'Sun',d:1392700,c:'#FFC93C',f:'The Sun is a star. About 109 Earths fit side by side across it.'};
+const OBJ=[[.05,'a speck of dust'],[.15,'a grain of fine sand'],[.4,'a grain of salt'],[1,'a poppy seed'],[2.5,'a sesame seed'],[5,'a peppercorn'],[8,'a pea'],[15,'a marble'],[22,'a grape'],[40,'a ping-pong ball'],[67,'a tennis ball'],[115,'a grapefruit'],[220,'a football'],[500,'a beach ball'],[1000,'a big exercise ball']];
+const P={total:store.get('ptotal',100),pos:0,walk:false,pause:0,reached:-1};
+const mPerAU=()=>P.total/NEP;
+function fmtM(m){if(m<1)return Math.round(m*100)+' cm';if(m<10)return m.toFixed(1)+' m';return Math.round(m).toLocaleString('en-GB')+' m';}
+function fmtSize(mm){if(mm<.1)return mm.toFixed(3)+' mm';if(mm<1)return mm.toFixed(2)+' mm';if(mm<10)return mm.toFixed(1)+' mm';if(mm<1000)return (mm/10).toFixed(1)+' cm';return (mm/1000).toFixed(2)+' m';}
+function like(mm){let b=OBJ[0];for(const o of OBJ)if(Math.abs(Math.log(mm/o[0]))<Math.abs(Math.log(mm/b[0])))b=o;const r=mm/b[0];return (r<.6?'even smaller than ':r>1.7?'a bit bigger than ':'about the size of ')+b[1];}
+const sizeMM=d=>d/AU_KM*mPerAU()*1000;
+const pr=d=>4+Math.sqrt(d/12742)*5;
+function ball(p,cls){const bands=p.n==='Jupiter'?'repeating-linear-gradient(170deg,#D9A066 0 8px,#C88A52 8px 14px,#E8C08E 14px 20px)':`radial-gradient(circle at 35% 30%,${shade(p.c,50)},${p.c} 55%,${shade(p.c,-40)})`;return `<div class="${cls}${p.ring?' ring':''}" style="background:${bands}"></div>`;}
+function trackSVG(maxAU,inner){const W=1000,H=172,x0=70,x1=960,y=88,X=au=>x0+au/maxAU*(x1-x0);let s=`<defs><radialGradient id="sg${inner?2:1}"><stop offset="0" stop-color="#FFF6C2"/><stop offset=".55" stop-color="#FFC93C"/><stop offset="1" stop-color="#FF9F43"/></radialGradient></defs>`;
+  s+=`<path d="M${x0} ${y}H${x1}" stroke="rgba(255,255,255,.28)" stroke-width="2" stroke-dasharray="4 9"/>`;
+  s+=`<circle cx="${x0-36}" cy="${y}" r="52" fill="#FFC93C" opacity=".18"/><circle cx="${x0-36}" cy="${y}" r="40" fill="url(#sg${inner?2:1})"/><text x="${x0-36}" y="${y+66}" text-anchor="middle" font-family="Fredoka" font-weight="600" font-size="17" fill="#FFE08A">Sun</text>`;
+  const show=inner?PL.slice(0,4):PL;
+  show.forEach((p,i)=>{const x=X(p.au),r=inner?pr(p.d)*1.6:pr(p.d);if(p.ring)s+=`<ellipse cx="${x}" cy="${y}" rx="${r*1.9}" ry="${r*.45}" fill="none" stroke="#f3e2a9" stroke-width="3" transform="rotate(-14 ${x} ${y})"/>`;
+    s+=`<circle cx="${x}" cy="${y}" r="${r.toFixed(1)}" fill="${p.c}"/>`;
+    if(inner||i>=4){const up=!inner&&i%2===0;const ly=up?y-r-12:y+r+22;s+=`<text x="${x}" y="${ly}" text-anchor="middle" font-family="Fredoka" font-weight="600" font-size="17" fill="#fff">${p.n}</text><text x="${x}" y="${up?ly-18:ly+18}" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="14" fill="#b9bfe8">${fmtM(p.au*mPerAU())}</text>`;}});
+  if(!inner){const a=X(.387)-6,b=X(1.524)+8;s+=`<path d="M${a} ${y+18}v8H${b}v-8" stroke="#b9bfe8" stroke-width="2" fill="none"/><text x="${(a+b)/2+4}" y="${y+46}" font-family="Nunito" font-weight="800" font-size="13" fill="#b9bfe8">4 inner planets ↓</text>`;}
+  return `<svg viewBox="0 0 ${W} ${H}">${s}</svg>`;}
+function pXpct(au,maxAU){return (70+au/maxAU*890)/10;}
+function pDraw(){const m=mPerAU();$('#pTrack').innerHTML=trackSVG(NEP,false);$('#pZoom').innerHTML=trackSVG(1.7,true);
+  const sun=sizeMM(SUN.d),earth=sizeMM(12742);
+  $('#pSub').innerHTML=`At this scale the Sun is <b>${fmtSize(sun)}</b> wide (${like(sun)}) and the Earth is just <b>${fmtSize(earth)}</b>. Every metre is ${Math.round(AU_KM/1e6/m).toLocaleString('en-GB')} million km in space.`;
+  const cards=[{...SUN,au:0}].concat(PL);
+  $('#pCards').innerHTML=cards.map((p,i)=>{const mm=sizeMM(p.d);return `<div class="pcard" id="pc${i}">${ball(p,'pball')}<h4>${p.n}</h4><div class="d">${i===0?'<b>Start here</b> with the Sun':`<b>${fmtM(p.au*m)}</b> from the Sun · ${Math.round(p.au*m/.5).toLocaleString('en-GB')} steps`}</div><div class="s">Size at this scale: ${fmtSize(mm)}, ${like(mm)}</div><p>${p.f}</p></div>`;}).join('');
+  pPlace();}
+function pPlace(){$('#pWalk').style.left=pXpct(P.pos,NEP)+'%';const z=$('#pWalk2');z.style.left=pXpct(Math.min(P.pos,1.7),1.7)+'%';z.style.opacity=P.pos>1.75?.25:1;
+  const m=P.pos*mPerAU();$('#pM').textContent=fmtM(m);$('#pSt').textContent=Math.round(m/.5).toLocaleString('en-GB');
+  $('#pWalk').classList.toggle('stop',!P.walk||P.pause>0);z.classList.toggle('stop',!P.walk||P.pause>0);
+  $$('.pcard').forEach((c,i)=>c.classList.toggle('hl',i===P.reached+1&&P.reached>=0));}
+function pReset(){P.walk=false;P.pos=0;P.reached=-1;P.pause=0;$('#pReach').textContent='';$('#pGo').textContent='🚶 Walk!';pPlace();}
+function pGo(){ac();if(P.pos>=NEP)pReset();P.walk=!P.walk;$('#pGo').textContent=P.walk?'⏸ Stop':'🚶 Walk on';if(P.walk&&P.pos===0){$('#pReach').textContent='Leaving the Sun…';}pPlace();}
+TOOLS.planets.enter=()=>pDraw();
+TOOLS.planets.leave=()=>{P.walk=false;$('#pGo').textContent=P.pos>0?'🚶 Walk on':'🚶 Walk!';};
+TOOLS.planets.space=pGo;
+TOOLS.planets.frame=dt=>{if(!P.walk)return;if(P.pause>0){P.pause-=dt;if(P.pause<=0)pPlace();return;}
+  const nx=P.reached+1;P.pos+=dt*(P.pos<1.7?.32:1.1);
+  if(nx<PL.length&&P.pos>=PL[nx].au){P.pos=PL[nx].au;P.reached=nx;P.pause=1.8;const p=PL[nx],m=p.au*mPerAU();$('#pReach').textContent=`You reached ${p.n}! ${fmtM(m)} from the Sun.`;SFX.chime();say(p.n);
+    if(nx===PL.length-1){P.walk=false;$('#pGo').textContent='↺ Walk again';confetti(160);setTimeout(()=>say('You walked the whole solar system!'),900);}}
+  pPlace();};
+$('#pGo').onclick=pGo;$('#pReset').onclick=pReset;
+const setDist=seg('#pDist',P.total,v=>{P.total=+v;store.set('ptotal',P.total);$('#pCustom').value='';pReset();pDraw();});
+$('#pCustom').onchange=e=>{const v=clamp(+e.target.value||100,5,5000);e.target.value=v;P.total=v;store.set('ptotal',v);setDist(-1);pReset();pDraw();};
+if(![20,50,100,200,400].includes(P.total))$('#pCustom').value=P.total;
+$('#pWalk .in').innerHTML=monster(12,{shape:2,eyes:3,extra:1,color:'#2ED3B7'});$('#pWalk2 .in').innerHTML=monster(12,{shape:2,eyes:3,extra:1,color:'#2ED3B7'});
+$('#pPrint').onclick=()=>{const m=mPerAU();const cards=[{...SUN,au:0}].concat(PL);
+  $('#printSigns').innerHTML=cards.map((p,i)=>{const mm=sizeMM(p.d);return `<div class="sign">${ball(p,'ball')}<h2>${p.n}</h2><div class="dd">${i===0?'Start here!':`${fmtM(p.au*m)} from the Sun · ${Math.round(p.au*m/.5).toLocaleString('en-GB')} steps`}</div><p>At this scale: ${fmtSize(mm)}, ${like(mm)}.<br>${p.f}</p></div>`;}).join('');
+  setTimeout(()=>window.print(),100);};
+
+/* ================= 5. NAME PICKER ================= */
+const DEF=['Amara','Leo','Sofia','Noah','Yuki','Mateo','Aisha','Finn','Lena','Omar','Mila','Arjun','Zoë','Lucas','Ingrid','Kofi','Elif','Sam','Nora','Hugo'];
+const G={names:store.get('names',DEF),picked:new Set(),noRep:store.get('norep',true),hide:false,busy:false};
+function gRender(){$('#gGrid').innerHTML=G.names.length?G.names.map((n,i)=>`<div class="ncard ${G.picked.has(i)?'picked':''}" id="nc${i}"><div class="av">${monster(n)}</div><b>${esc(n)}</b></div>`).join(''):'<p style="grid-column:1/-1;text-align:center;font-weight:800;color:var(--muted)">No names yet. Press <b>Edit class</b> to add your class.</p>';
+  $('#gCount').textContent=G.noRep&&G.names.length?`${G.picked.size} of ${G.names.length} have had a turn`:`${G.names.length} monsters`;}
+function gPick(){ac();if(G.busy||!G.names.length)return;$('#gWin').classList.remove('open');
+  const pool=G.names.map((n,i)=>i).filter(i=>!(G.noRep&&G.picked.has(i)));
+  if(!pool.length){$('#gCount').textContent='Everyone has had a turn! Press "Everyone back".';SFX.chime();return;}
+  G.busy=true;const win=pool[Math.random()*pool.length|0];let k=0,steps=pool.length>1?16:1,delay=60,prev=-1;
+  const hop=()=>{$$('.ncard.hl').forEach(e=>e.classList.remove('hl'));
+    if(k>=steps-1){const el=$('#nc'+win);if(el){el.classList.add('hl');el.scrollIntoView({block:'nearest'});}setTimeout(()=>gWin(win),420);return;}
+    let j;do{j=pool[Math.random()*pool.length|0];}while(j===prev&&pool.length>1);prev=j;const el=$('#nc'+j);if(el){el.classList.add('hl');el.scrollIntoView({block:'nearest'});}SFX.tick();k++;delay*=1.15;setTimeout(hop,delay);};
+  hop();}
+function gWin(i){G.busy=false;const n=G.names[i];if(G.noRep)G.picked.add(i);$('#gWinMon').innerHTML=monster(n,{mood:'cheer'});$('#gWinName').textContent=n;$('#gWin').classList.add('open');confetti(170);SFX.fanfare();setTimeout(()=>say(n),350);gRender();}
+TOOLS.names.enter=()=>gRender();
+TOOLS.names.leave=()=>{$('#gWin').classList.remove('open');$('#gDrawer').classList.remove('open');};
+TOOLS.names.space=gPick;
+TOOLS.names.esc=()=>{$('#gWin').classList.remove('open');$('#gDrawer').classList.remove('open');};
+$('#gGo').onclick=gPick;$('#gAgain').onclick=gPick;$('#gClose').onclick=()=>$('#gWin').classList.remove('open');
+$('#gReset').onclick=()=>{G.picked.clear();gRender();};
+$('#gHide').onclick=()=>{G.hide=!G.hide;$('#v-names').classList.toggle('hidenames',G.hide);$('#gHide').textContent=G.hide?'Show names':'Hide names';};
+$('#gEdit').onclick=()=>{$('#gText').value=G.names.join('\n');$('#gNoRep').checked=G.noRep;$('#gDrawer').classList.add('open');setTimeout(()=>$('#gText').focus(),50);};
+$('#gCancel').onclick=()=>$('#gDrawer').classList.remove('open');
+$('#gClear').onclick=()=>{$('#gText').value='';};
+$('#gSave').onclick=()=>{G.names=$('#gText').value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean).slice(0,80);G.noRep=$('#gNoRep').checked;store.set('names',G.names);store.set('norep',G.noRep);G.picked.clear();$('#gDrawer').classList.remove('open');gRender();};
+
+/* ================= loop ================= */
+let last=performance.now();
+function step(dt){const T=TOOLS[cur];if(T&&T.frame)T.frame(dt);drawConfetti(dt);}
+function loop(now){requestAnimationFrame(loop);const dt=Math.min(.1,(now-last)/1000);last=now;step(dt);}
+route();requestAnimationFrame(loop);
+window.__mc={go:route,step:(n,d)=>{for(let i=0;i<n;i++)step(d||1/60);},N,T,F,P,G,TOOLS};
+})();
+</script>
+</body>
+</html>
