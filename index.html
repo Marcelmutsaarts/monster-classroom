@@ -223,15 +223,25 @@ input[type=range]{accent-color:var(--purple);width:150px}
 @media (max-width:900px){.hero{grid-template-columns:1fr;padding:28px 24px 0}.grid3,.tips{grid-template-columns:1fr 1fr}.pcards{grid-template-columns:1fr 1fr}}
 @media (max-width:1000px){.chip .t{display:none}}@media (max-width:640px){.grid2,.grid3,.tips,.pcards{grid-template-columns:1fr}.tb-title .age{display:none}.tb-title b{font-size:19px}.meter{right:12px;width:38px}.tbag{font-size:20px}.tbag svg{width:34px;height:34px}}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+
+.site-bar{max-width:1160px;margin:auto;padding:12px 20px 0;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.avd-logo img{display:block;width:145px;height:52px;object-fit:contain}
+.language-label{display:flex;align-items:center;gap:8px;font-weight:800}
+.language-select{border:2px solid var(--line);border-radius:999px;background:#fff;padding:7px 10px;min-height:40px;cursor:pointer;font:600 15px Fredoka}
+.language-select:focus-visible{outline:3px solid #6c43d6;outline-offset:2px}
+body.in-tool .site-bar{display:none}
+@media(max-width:640px){#tb{gap:6px;padding:0 8px}.tb-back{padding:8px}.tb-act{gap:4px}.tb-title b{font-size:16px;max-width:125px}.chip{padding:8px}.language-select{padding:7px}.dock{max-height:42vh;overflow:auto;gap:8px 12px;padding:8px}.tb-title{flex:1}.overlay{overflow:auto}.ocard textarea{min-height:120px}.ocard{max-height:100%;overflow:auto}}
+@media(max-width:380px){.tb-title b{max-width:83px}.tb-back{font-size:13px}}
 </style>
 </head>
 <body>
 <canvas id="confetti"></canvas>
+<div class="site-bar"><a class="avd-logo" href="https://aivoordocenten.nl" target="_blank" rel="noopener"><img src="https://aivoordocenten.nl/logo-ai-voor-docenten.png" alt="AI voor Docenten"></a><label class="language-label"><span>NL / EN</span><select class="language-select" aria-label="Taal / Language"><option value="nl">Nederlands</option><option value="en">English</option></select></label></div>
 
 <header id="tb">
   <a class="tb-back" href="#">← All tools</a>
   <div class="tb-title"><b id="tbTitle"></b><span class="age" id="tbAge"></span></div>
-  <div class="tb-act"><button class="chip" id="bSound">🔊 <span class="t">Sound</span></button><button class="chip" id="bVoice">🗣️ <span class="t">Voice</span></button><button class="chip" id="bFull">⛶ <span class="t">Full screen</span></button></div>
+  <div class="tb-act"><select class="language-select" aria-label="Taal / Language"><option value="nl">NL</option><option value="en">EN</option></select><button class="chip" id="bSound">🔊 <span class="t">Sound</span></button><button class="chip" id="bVoice">🗣️ <span class="t">Voice</span></button><button class="chip" id="bFull">⛶ <span class="t">Full screen</span></button></div>
 </header>
 
 <!-- ================= HOME ================= -->
@@ -377,6 +387,21 @@ function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a
 function hash(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
 const store={get(k,d){try{const v=localStorage.getItem('monsterclass.'+k);return v===null?d:JSON.parse(v);}catch(e){return d;}},set(k,v){try{localStorage.setItem('monsterclass.'+k,JSON.stringify(v));}catch(e){}}};
 
+
+/* Language is a user preference; names and all game state remain unchanged. */
+let language=store.get('language','nl')==='en'?'en':'nl';
+const NL={"Little tools for big classrooms":"Kleine tools voor de hele klas","Five friendly monsters to help with noise, tidying up, number sense, space and taking turns. Open it on the board and press start.":"Vijf vrolijke monsters helpen bij rustig werken, opruimen, getalbegrip, het zonnestelsel en beurten verdelen. Open de app op het digibord en druk op start.","For every class":"Voor elke groep","Use these every day, from nursery to the last year of primary.":"Voor dagelijks gebruik, van de kleuters tot en met groep 8.","By age":"Per leeftijd","One monster for each stage of the school.":"Een monster voor elke leeftijdsgroep.","All ages":"Alle leeftijden","Nursery & Reception · 3–5":"Peuters & kleuters · 3–5 jaar","Lower primary · 4–7":"Onderbouw · 4–7 jaar","Upper primary · 8–11":"Midden- & bovenbouw · 8–11 jaar","Noise Monster":"Geluidsmonster","Monster Name Picker":"Monsterbeurtkiezer","Tidy-up Monster":"Opruimmonster","Ten Frame Flash":"Monsterflits","Planet Walk":"Planetenwandeling","Keep the monster asleep! It wakes up and grows when the class gets too loud. Quiet time earns stars.":"Laat het monster slapen! Het wordt wakker en groeit als de klas te luid is. Door rustig te werken verdien je sterren.","Every child gets their own little monster. Who is next? Fair turns for everyone.":"Elk kind krijgt een eigen monstertje. Wie is er aan de beurt? Iedereen komt aan bod.","Tidy up before the monster gets home. With music and a big party at the end.":"Ruim op voordat het monster thuis is. Met muziek en een feestje aan het einde.","Flash, look, say! How many monsters did you see? And how many more make ten?":"Flits, kijk, vertel! Hoeveel monsters zag je? En hoeveel zijn er nog nodig om tien te maken?","Fly through a 3D solar system, then line up the planets and walk it to scale. Earth is smaller than a grain of sand!":"Vlieg door een 3D-zonnestelsel, zet de planeten op een rij en loop er op schaal doorheen. Hoe klein is de aarde op jouw schaal?","Open →":"Openen →","On the board":"Op het digibord","Press":"Druk op","Full screen":"Volledig scherm","and use the":"en gebruik de","space bar":"spatiebalk","for the main action in every tool.":"voor de belangrijkste actie in elke tool.","Nothing leaves the room":"Alles blijft in de klas","No accounts, no tracking. The microphone only measures loudness. Nothing is recorded or sent.":"Geen accounts, geen tracking. De microfoon meet alleen het geluidsniveau. Er wordt niets opgenomen of verstuurd.","Names stay here":"Namen blijven hier","Class names are stored only in this browser on this device. You can clear them at any time.":"De namen van je klas blijven in deze browser op dit apparaat. Je kunt ze op elk moment wissen.","Monster Classroom · made with vibe coding":"Monster Classroom · gemaakt met vibecoden","An example by":"Een voorbeeld van","← All tools":"← Alle tools","Sound":"Geluid","Voice":"Spraak","Press start. Can you keep me asleep?":"Druk op start. Kunnen jullie mij laten slapen?","Next star":"Volgende ster","too loud":"te luid","🎤 Start listening":"🎤 Start luisteren","⏸ Stop listening":"⏸ Stop luisteren","Activity":"Activiteit","Silent work":"Stil werken","Quiet talk":"Zacht praten","Group work":"Groepswerk","Too loud at":"Te luid vanaf","Microphone sensitivity":"Gevoeligheid microfoon","A star every":"Een ster elke","Reset stars":"Sterren wissen","Test without microphone":"Test zonder microfoon","Zzz… shhh, I'm sleeping.":"Zzz… sssst, ik slaap.","Hmm? I can hear you…":"Hè? Ik hoor jullie…","TOO LOUD! I'm awake!":"TE LUID! Ik ben wakker!","No microphone available or permission was not given. You can try the monster with the test slider below.":"Er is geen microfoon beschikbaar of er is geen toestemming gegeven. Probeer het monster met de testschuif hieronder.","Five stars! Well done, everyone!":"Vijf sterren! Goed gedaan, allemaal!","All tidy! Well done!":"Alles opgeruimd! Goed gedaan!","↺ Start again":"↺ Opnieuw beginnen","How long?":"Hoelang?","Music":"Muziek","On":"Aan","Off":"Uit","Clock":"Klok","Show":"Tonen","Hide":"Verbergen","⏸ Pause":"⏸ Pauze","▶ Go on":"▶ Verder","↺ Again":"↺ Opnieuw","Tidy-up time! Let's help the monster.":"Tijd om op te ruimen! Help het monster.","All tidy! Well done, everyone!":"Alles opgeruimd! Goed gedaan, allemaal!","How many monsters?":"Hoeveel monsters?","⚡ Flash!":"⚡ Flits!","👀 Show me":"👀 Laat zien","Numbers":"Getallen","Show as":"Weergave","Ten frame":"Tienveld","Dice":"Dobbelsteen","Scattered":"Door elkaar","Flash for":"Flitsduur","Keep":"Blijven tonen","Question":"Vraag","How many?":"Hoeveel?","Make 10":"Aanvullen tot 10","How many more to make 10?":"Hoeveel nog om 10 te maken?","Press Flash! or the space bar":"Druk op Flits! of op de spatiebalk","What did you see? Press space to check.":"Wat zag je? Druk op de spatiebalk om te controleren.","3D solar system":"3D-zonnestelsel","🪐 Solar system":"🪐 Zonnestelsel","🚶 Walk to scale":"🚶 Lopen op schaal","Neptune is":"Neptunus staat op","other…":"anders…","Your own distance in metres":"Je eigen afstand in meters","from the Sun":"van de zon","Eight planets travel around the Sun. Click a planet to find out more, then line them up and walk the solar system to scale.":"Acht planeten draaien om de zon. Klik op een planeet voor meer informatie. Zet ze daarna op een rij en loop op schaal door het zonnestelsel.","Real sizes.":"Echte afmetingen.","At this scale the planets are so tiny you can hardly see them. The circles show where they are. Space is mostly… space!":"Op deze schaal zijn de planeten zo klein dat je ze nauwelijks ziet. De cirkels geven hun plek aan. De ruimte is vooral… leegte!","children's steps":"kinderstappen","Drag to turn · scroll to zoom · click a planet":"Sleep om te draaien · scroll om te zoomen · klik op een planeet","Line up the planets →":"Zet de planeten op een rij →","🚶 Walk!":"🚶 Lopen!","🚶 Walk on":"🚶 Verder lopen","↺ Walk again":"↺ Opnieuw lopen","Slow":"Langzaam","Normal":"Normaal","🚀 Rocket":"🚀 Raket","🔬 Real sizes":"🔬 Echte afmetingen","↺ Back to the Sun":"↺ Terug naar de zon","🖨️ Planet signs":"🖨️ Planeetkaartjes","Mercury":"Mercurius","Venus":"Venus","Earth":"Aarde","Mars":"Mars","Jupiter":"Jupiter","Saturn":"Saturnus","Uranus":"Uranus","Neptune":"Neptunus","Sun":"Zon","88 days":"88 dagen","225 days":"225 dagen","365 days":"365 dagen","687 days":"687 dagen","12 years":"12 jaar","29 years":"29 jaar","84 years":"84 jaar","165 years":"165 jaar","The smallest planet and the closest to the Sun. Days are boiling hot and nights are freezing cold.":"De kleinste planeet en het dichtst bij de zon. Overdag is het er gloeiend heet en 's nachts ijskoud.","The hottest planet, hotter than a pizza oven! Its thick clouds trap the heat.":"De heetste planeet, heter dan een pizzaoven! De dikke atmosfeer houdt de warmte vast.","Our home. The only planet where we know there is life, with liquid water on the surface.":"Ons thuis. De enige planeet waarvan we weten dat er leven is, met vloeibaar water aan het oppervlak.","The red planet. It has the tallest volcano in the solar system: Olympus Mons.":"De rode planeet. Hier staat de hoogste vulkaan van het zonnestelsel: Olympus Mons.","The biggest planet. More than 1,300 Earths could fit inside it. The Great Red Spot is a storm bigger than Earth.":"De grootste planeet. Er passen meer dan 1.300 aardes in. De Grote Rode Vlek is een storm die groter is dan de aarde.","Famous for its rings, made of billions of pieces of ice and rock.":"Beroemd om zijn ringen, die bestaan uit miljarden stukjes ijs en steen.","It spins on its side, like a ball rolling around the Sun.":"Draait op zijn kant, als een bal die om de zon rolt.","The windiest planet. Its storms are faster than a jet plane.":"De planeet met de hardste wind. De stormen zijn sneller dan een straalvliegtuig.","The Sun is a star. About 109 Earths fit side by side across it, and it holds almost all the mass of the solar system.":"De zon is een ster. Er passen ongeveer 109 aardes naast elkaar over haar diameter. Bijna alle massa van het zonnestelsel zit in de zon.","a speck of dust":"een stofje","a grain of fine sand":"een fijn zandkorreltje","a grain of salt":"een zoutkorrel","a poppy seed":"een maanzaadje","a sesame seed":"een sesamzaadje","a peppercorn":"een peperkorrel","a pea":"een erwt","a marble":"een knikker","a grape":"een druif","a ping-pong ball":"een pingpongbal","a tennis ball":"een tennisbal","a grapefruit":"een grapefruit","a football":"een voetbal","a beach ball":"een strandbal","a big exercise ball":"een grote fitnessbal","even smaller than ":"nog kleiner dan ","a bit bigger than ":"iets groter dan ","about the size of ":"ongeveer zo groot als ","Building the solar system…":"Het zonnestelsel wordt opgebouwd…","The 3D solar system could not load. Check the internet connection and reload the page.":"Het 3D-zonnestelsel kon niet laden. Controleer de internetverbinding en herlaad de pagina.","This browser cannot show 3D graphics. Try Chrome or Edge.":"Deze browser kan geen 3D-beelden tonen. Probeer Chrome of Edge.","You walked the whole solar system!":"Je hebt door het hele zonnestelsel gelopen!","Let's go! Leaving the Sun.":"Daar gaan we! We vertrekken bij de zon.","Let's line up the planets!":"We zetten de planeten op een rij!","This is how small the planets really are!":"Zo klein zijn de planeten echt!","Close":"Sluiten","Our star":"Onze ster","Start here":"Begin hier","Start here!":"Begin hier!","Diameter":"Diameter","From the Sun":"Afstand tot de zon","One year":"Eén jaar","Earths across":"Aantal aarddiameters","Sun & inner planets":"Zon & binnenplaneten","🎲 Pick a monster!":"🎲 Kies een monster!","↺ Everyone back":"↺ Iedereen weer meedoen","✏️ Edit class":"✏️ Klas aanpassen","Hide names":"Namen verbergen","Show names":"Namen tonen","🎲 Pick again":"🎲 Opnieuw kiezen","Back to the class":"Terug naar de klas","Your class":"Jouw klas","One name per line. Each name gets its own monster. Names are saved only in this browser.":"Eén naam per regel. Elke naam krijgt een eigen monster. Namen worden alleen in deze browser opgeslagen.","Everyone gets a turn before anyone is picked again":"Iedereen krijgt een beurt voordat iemand opnieuw wordt gekozen","Save class":"Klas opslaan","Cancel":"Annuleren","Clear all names":"Alle namen wissen","No names yet. Press":"Nog geen namen. Klik op","Edit class":"Klas aanpassen","to add your class.":"om je klas toe te voegen.","Everyone has had a turn! Press \"Everyone back\".":"Iedereen is aan de beurt geweest! Klik op \"Iedereen weer meedoen\".","zero":"nul","one":"één","two":"twee","three":"drie","four":"vier","five":"vijf","six":"zes","seven":"zeven","eight":"acht","nine":"negen","ten":"tien","eleven":"elf","twelve":"twaalf","thirteen":"dertien","fourteen":"veertien","fifteen":"vijftien","sixteen":"zestien","seventeen":"zeventien","eighteen":"achttien","nineteen":"negentien","twenty":"twintig"};
+const locale=()=>language==='nl'?'nl-NL':'en-GB';
+function tr(text){return language==='nl'?(NL[text]??text):text;}
+function choose(en,nl){return language==='nl'?nl:en;}
+function fixed(n,d){return Number(n).toLocaleString(locale(),{minimumFractionDigits:d,maximumFractionDigits:d});}
+function translatedHTML(markup){return markup.replace(/>([^<>]+)</g,(all,text)=>{const clean=text.trim();return '>'+text.replace(clean,tr(clean))+'<';});}
+const staticText=[],staticAttrs=[];
+const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+while(walker.nextNode()){const node=walker.currentNode;if(node.parentElement.closest('script,style,svg,textarea'))continue;const key=node.textContent.trim();if(Object.prototype.hasOwnProperty.call(NL,key))staticText.push([node,node.textContent,key]);}
+document.querySelectorAll('[aria-label],[placeholder],[title]').forEach(el=>['aria-label','placeholder','title'].forEach(attr=>{const key=el.getAttribute(attr);if(key&&Object.prototype.hasOwnProperty.call(NL,key))staticAttrs.push([el,attr,key]);}));
+function applyStaticLanguage(){staticText.forEach(([node,original,key])=>{if(node.isConnected)node.textContent=original.replace(key,tr(key));});staticAttrs.forEach(([el,attr,key])=>el.setAttribute(attr,tr(key)));document.documentElement.lang=language;document.querySelectorAll('.language-select').forEach(el=>el.value=language);}
+
 /* ================= monster generator ================= */
 const PAL=['#8BD346','#9B6BFF','#4CB8FF','#FF7EB6','#FF9F43','#2ED3B7','#FFC93C','#FF6B6B'];
 function shade(hex,amt){const c=parseInt(hex.slice(1),16);const f=v=>clamp(v+amt,0,255);return '#'+((1<<24)|(f(c>>16)<<16)|(f(c>>8&255)<<8)|f(c&255)).toString(16).slice(1);}
@@ -421,7 +446,7 @@ function note(f,dur,vol,type,at){if(!soundOn)return;const c=ac();if(!c)return;co
 const SFX={tick(){note(1100,.045,.07,'square');},pop(){note(620,.09,.12,'triangle');note(930,.08,.08,'triangle',(ac()||{currentTime:0}).currentTime+.05);},
   chime(){const c=ac();if(!c)return;const t=c.currentTime;[1047,1319,1568].forEach((f,i)=>note(f,.5,.1,'sine',t+i*.09));},
   fanfare(){const c=ac();if(!c)return;const t=c.currentTime;[523,659,784,1047,784,1047].forEach((f,i)=>note(f,i>4?.6:.22,.13,'triangle',t+i*.13));}};
-function say(txt){if(!voiceOn||!('speechSynthesis' in window))return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(txt);u.lang='en-GB';const vs=speechSynthesis.getVoices();const v=vs.find(v=>/en[-_]GB/i.test(v.lang))||vs.find(v=>/^en/i.test(v.lang));if(v)u.voice=v;u.rate=.9;u.pitch=1.1;speechSynthesis.speak(u);}catch(e){}}
+function say(txt){if(!voiceOn||!('speechSynthesis' in window))return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(txt);u.lang=locale();const vs=speechSynthesis.getVoices();const v=vs.find(v=>v.lang.toLowerCase()===locale().toLowerCase())||vs.find(v=>v.lang.toLowerCase().startsWith(language));if(v)u.voice=v;u.rate=.9;u.pitch=1.1;speechSynthesis.speak(u);}catch(e){}}
 const cv=$('#confetti'),cx=cv.getContext('2d');let parts=[],cvOn=false;
 function confetti(n){const W=innerWidth,H=innerHeight;for(let i=0;i<(n||160);i++)parts.push({x:W*(.2+Math.random()*.6),y:H*.32+Math.random()*40,vx:(Math.random()-.5)*14,vy:-Math.random()*13-5,w:Math.random()*8+6,h:Math.random()*5+4,c:PAL[i%PAL.length],a:Math.random()*6,va:(Math.random()-.5)*.4,life:0});}
 function drawConfetti(dt){if(!parts.length){if(cvOn){cx.clearRect(0,0,cv.width,cv.height);cvOn=false;}return;}cvOn=true;if(cv.width!==innerWidth||cv.height!==innerHeight){cv.width=innerWidth;cv.height=innerHeight;}cx.clearRect(0,0,cv.width,cv.height);const k=dt*60;
@@ -443,10 +468,10 @@ const ART={
  tidy:()=>`<div class="m" style="width:160px">${monster(7,{shape:3,eyes:2,extra:1,color:'#FF9F43'})}</div><svg viewBox="0 0 60 60" style="position:absolute;left:22%;bottom:16px;width:58px"><rect x="6" y="6" width="48" height="48" rx="9" fill="#FF6B6B"/><text x="30" y="43" text-anchor="middle" font-family="Fredoka" font-weight="700" font-size="32" fill="#fff">A</text></svg><svg viewBox="0 0 60 60" style="position:absolute;right:22%;bottom:16px;width:52px"><circle cx="30" cy="30" r="26" fill="#4CB8FF"/><path d="M4 30h52M30 4c-14 14-14 38 0 52" stroke="#fff" stroke-width="5" fill="none"/></svg>`,
  ten:()=>{let s=`<rect x="0" y="0" width="480" height="192" rx="14" fill="#fff" stroke="#2B2350" stroke-width="5"/>`;for(let i=1;i<5;i++)s+=`<path d="M${i*96} 0V192" stroke="#2B2350" stroke-width="4"/>`;s+=`<path d="M0 96H480" stroke="#2B2350" stroke-width="4"/>`;for(let k=0;k<7;k++)s+=fCounter((k%5)*96+48,Math.floor(k/5)*96+52,'#2ED3B7');return `<svg viewBox="-10 -30 500 232" style="width:78%;margin-bottom:22px">${s}</svg>`;},
  planets:()=>{let s=`<defs><radialGradient id="hsun"><stop offset="0" stop-color="#FFF6C2"/><stop offset=".35" stop-color="#FFC93C"/><stop offset=".6" stop-color="#FF8A00" stop-opacity=".55"/><stop offset="1" stop-color="#FF6A00" stop-opacity="0"/></radialGradient><radialGradient id="hjup" cx=".35" cy=".35"><stop offset="0" stop-color="#f3e9d6"/><stop offset=".6" stop-color="#c99b6b"/><stop offset="1" stop-color="#7d4f2e"/></radialGradient></defs>`;const R=mulberry32(4);for(let i=0;i<60;i++)s+=`<circle cx="${(R()*300).toFixed(1)}" cy="${(R()*200).toFixed(1)}" r="${(R()*1.2+.3).toFixed(2)}" fill="#fff" opacity="${(.3+R()*.7).toFixed(2)}"/>`;[70,105,150,205,265].forEach(r=>s+=`<circle cx="0" cy="200" r="${r}" fill="none" stroke="rgba(160,180,255,.22)" stroke-width="1"/>`);s+=`<circle cx="0" cy="200" r="95" fill="url(#hsun)"/><circle cx="0" cy="200" r="42" fill="#FFC93C"/><circle cx="52" cy="152" r="5" fill="#3D8BFD"/><circle cx="92" cy="146" r="4" fill="#E0663F"/><circle cx="118" cy="80" r="17" fill="url(#hjup)"/><g transform="rotate(-18 196 70)"><ellipse cx="196" cy="70" rx="30" ry="7" fill="none" stroke="#f3e2a9" stroke-width="3"/><circle cx="196" cy="70" r="13" fill="#E8D08F"/><path d="M168 71a28 6 0 0 0 56 0" fill="none" stroke="#f3e2a9" stroke-width="3"/></g><circle cx="255" cy="40" r="8" fill="#4C6EF5"/>`;return `<svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0;width:100%;height:100%">${s}</svg>`;}};
-function card(id){const T=TOOLS[id],A=AGES[T.age];return `<a class="tcard" href="#${id}"><div class="art" style="background:${T.bg}">${ART[id]()}</div><div class="body"><span class="age" style="background:${A.c};align-self:flex-start">${A.t}</span><h3>${T.t}</h3><p>${T.sub}</p><span class="go">Open →</span></div></a>`;}
+function card(id){const T=TOOLS[id],A=AGES[T.age];return `<a class="tcard" href="#${id}"><div class="art" style="background:${T.bg}">${ART[id]()}</div><div class="body"><span class="age" style="background:${A.c};align-self:flex-start">${tr(A.t)}</span><h3>${tr(T.t)}</h3><p>${tr(T.sub)}</p><span class="go">${tr("Open →")}</span></div></a>`;}
 $('#gridAll').innerHTML=card('noise')+card('names');
 $('#gridAge').innerHTML=card('tidy')+card('ten')+card('planets');
-$('#legend').innerHTML=Object.values(AGES).map(a=>`<span class="age" style="background:${a.c}">${a.t}</span>`).join('');
+$('#legend').innerHTML=Object.values(AGES).map(a=>`<span class="age" style="background:${a.c}">${tr(a.t)}</span>`).join('');
 $('#heroMons').innerHTML=[monster('Bo',{shape:1,eyes:2,extra:1,color:'#FFC93C'}),monster('Zip',{shape:2,eyes:3,extra:3,color:'#2ED3B7',mood:'cheer'}),monster('Gus',{shape:0,eyes:1,extra:0,color:'#FF7EB6'})].map(m=>`<div>${m}</div>`).join('');
 
 /* ================= router & toolbar ================= */
@@ -455,7 +480,7 @@ function route(id){if(typeof id!=='string')id=location.hash.replace('#','');cons
   if(cur&&TOOLS[cur].leave)TOOLS[cur].leave();cur=next;
   $$('.view').forEach(v=>v.classList.toggle('on',v.id===(next?'v-'+next:'v-home')));
   document.body.classList.toggle('in-tool',!!next);
-  if(next){const T=TOOLS[next],A=AGES[T.age];$('#tbTitle').textContent=T.t;$('#tbAge').textContent=A.t;$('#tbAge').style.background=A.c;document.title=T.t+' · Monster Classroom';if(T.enter)T.enter();}
+  if(next){const T=TOOLS[next],A=AGES[T.age];$('#tbTitle').textContent=tr(T.t);$('#tbAge').textContent=tr(A.t);$('#tbAge').style.background=A.c;document.title=tr(T.t)+' · Monster Classroom';if(T.enter)T.enter();}
   else document.title='Monster Classroom';
   window.scrollTo(0,0);}
 addEventListener('hashchange',()=>route());
@@ -475,18 +500,18 @@ const NCOL={sleep:'#8E7CF0',awake:'#9B6BFF',angry:'#FF5A5F'};
 const NTXT={sleep:'Zzz… shhh, I\'m sleeping.',awake:'Hmm? I can hear you…',angry:'TOO LOUD! I\'m awake!'};
 function nRender(){$('#nMon').innerHTML=monster(3,{shape:0,eyes:1,extra:0,color:NCOL[N.state],spots:false,mood:N.state==='sleep'?'sleep':N.state==='angry'?'angry':'awake'});
   $('#nZzz').style.display=N.state==='sleep'?'':'none';const v=$('#v-noise');v.classList.remove('sleep','awake','angry');v.classList.add(N.state);
-  $('#nBubble').textContent=(N.on||N.demo)?NTXT[N.state]:'Press start. Can you keep me asleep?';}
+  $('#nBubble').textContent=tr((N.on||N.demo)?NTXT[N.state]:'Press start. Can you keep me asleep?');}
 function nStars(){const on=N.stars===0?0:((N.stars-1)%5)+1;const star='<svg class="star{c}" viewBox="0 0 48 48"><path d="M24 4l6 13 14 2-10 10 2 14-12-7-12 7 2-14L4 19l14-2z" stroke-linejoin="round"/></svg>';
-  $('#nStars').innerHTML=[0,1,2,3,4].map(i=>star.replace('{c}',i<on?' on':'')).join('');$('#nTotal').textContent=N.stars?`${N.stars} ★ in total`:'';}
+  $('#nStars').innerHTML=[0,1,2,3,4].map(i=>star.replace('{c}',i<on?' on':'')).join('');$('#nTotal').textContent=N.stars?`${N.stars} ★ ${choose('in total','in totaal')}`:'';}
 function nThr(){$('#nThr').style.bottom=N.thr+'%';$('#nThrIn').value=N.thr;}
 async function nStart(){ac();if(N.on){nStop();nRender();return;}
   try{if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw new Error('no-media');
     const s=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
     const c=ac();N.stream=s;N.src=c.createMediaStreamSource(s);N.an=c.createAnalyser();N.an.fftSize=2048;N.buf=new Float32Array(N.an.fftSize);const mute=c.createGain();mute.gain.value=0;N.src.connect(N.an);N.an.connect(mute);mute.connect(c.destination);
-    N.on=true;N.demo=false;$('#nDemoWrap').style.display='none';$('#nMsg').style.display='none';$('#nStart').textContent='⏸ Stop listening';N.calm=0;nRender();}
-  catch(e){N.demo=true;$('#nDemoWrap').style.display='';$('#nMsg').style.display='';$('#nMsg').textContent='No microphone available or permission was not given. You can try the monster with the test slider below.';nRender();}}
-function nStop(){if(N.stream)N.stream.getTracks().forEach(t=>t.stop());if(N.src)try{N.src.disconnect();}catch(e){}N.stream=N.src=N.an=null;N.on=false;$('#nStart').textContent='🎤 Start listening';}
-function nStar(){N.stars++;SFX.chime();nStars();if(N.stars%5===0){confetti(180);SFX.fanfare();say('Five stars! Well done, everyone!');}}
+    N.on=true;N.demo=false;$('#nDemoWrap').style.display='none';$('#nMsg').style.display='none';$('#nStart').textContent=tr('⏸ Stop listening');N.calm=0;nRender();}
+  catch(e){N.demo=true;$('#nDemoWrap').style.display='';$('#nMsg').style.display='';$('#nMsg').textContent=tr('No microphone available or permission was not given. You can try the monster with the test slider below.');nRender();}}
+function nStop(){if(N.stream)N.stream.getTracks().forEach(t=>t.stop());if(N.src)try{N.src.disconnect();}catch(e){}N.stream=N.src=N.an=null;N.on=false;$('#nStart').textContent=tr('🎤 Start listening');}
+function nStar(){N.stars++;SFX.chime();nStars();if(N.stars%5===0){confetti(180);SFX.fanfare();say(tr('Five stars! Well done, everyone!'));}}
 TOOLS.noise.enter=()=>{nRender();nStars();nThr();};
 TOOLS.noise.leave=()=>{nStop();N.demo=false;N.state='sleep';N.level=0;};
 TOOLS.noise.space=()=>nStart();
@@ -523,13 +548,13 @@ function tPaint(){const p=T.done?1:1-T.left/T.dur;$('#tMon').style.left=(T.done?
   const m=Math.ceil(T.left),txt=Math.floor(m/60)+':'+String(m%60).padStart(2,'0');$('#tClock').textContent=txt;$('#tClock').style.display=T.showClock?'':'none';
   $('#tBagWrap').innerHTML=BAG+`<span>${T.got} / ${TOYS.length}</span>`;}
 function tReset(){T.run=false;T.done=false;T.left=T.dur;T.got=0;tMusic(false);$$('.toy').forEach(e=>e.classList.remove('got'));$('#v-tidy').classList.remove('done');$('#tMon').className='tmon';$('#tMon .in').innerHTML=monster(7,{shape:3,eyes:2,extra:1,color:'#FF9F43'});$('#tGo').textContent='▶ Start';tPaint();}
-function tGo(){ac();if(T.done){tReset();return;}T.run=!T.run;$('#tGo').textContent=T.run?'⏸ Pause':'▶ Go on';$('#tMon').classList.toggle('walk',T.run);tMusic(T.run&&T.music);if(T.run&&T.left===T.dur)say("Tidy-up time! Let's help the monster.");}
-function tFinish(){T.run=false;T.done=true;T.left=0;tMusic(false);$('#v-tidy').classList.add('done');$('#tMon').className='tmon party';$('#tMon .in').innerHTML=monster(7,{shape:3,eyes:2,extra:1,color:'#FF9F43',mood:'cheer'});$('#tGo').textContent='↺ Again';confetti(220);SFX.fanfare();setTimeout(()=>say('All tidy! Well done, everyone!'),900);tPaint();}
+function tGo(){ac();if(T.done){tReset();return;}T.run=!T.run;$('#tGo').textContent=tr(T.run?'⏸ Pause':'▶ Go on');$('#tMon').classList.toggle('walk',T.run);tMusic(T.run&&T.music);if(T.run&&T.left===T.dur)say(tr("Tidy-up time! Let's help the monster."));}
+function tFinish(){T.run=false;T.done=true;T.left=0;tMusic(false);$('#v-tidy').classList.add('done');$('#tMon').className='tmon party';$('#tMon .in').innerHTML=monster(7,{shape:3,eyes:2,extra:1,color:'#FF9F43',mood:'cheer'});$('#tGo').textContent=tr('↺ Again');confetti(220);SFX.fanfare();setTimeout(()=>say(tr('All tidy! Well done, everyone!')),900);tPaint();}
 const MEL=[0,4,7,4,9,7,4,2,0,2,4,7,4,2,0,-5],BASE=523.25;
 function tMusic(on){clearInterval(T.timer);T.timer=null;if(!on)return;const c=ac();if(!c)return;T.next=c.currentTime+.05;T.step=0;
   T.timer=setInterval(()=>{const c=ac();while(T.next<c.currentTime+.15){const s=T.step,n=MEL[s%16];note(BASE*Math.pow(2,n/12),.17,.07,'triangle',T.next);if(s%4===0)note((s%8===0?130.81:196),.28,.1,'sine',T.next);if(s%2===1)note(4000,.02,.012,'square',T.next);T.next+=T.left<15?.14:.2;T.step++;}},30);}
 TOOLS.tidy.enter=()=>{if(!T.run&&!T.done)tReset();};
-TOOLS.tidy.leave=()=>{T.run=false;tMusic(false);$('#tMon').classList.remove('walk');$('#tGo').textContent=T.done?'↺ Again':'▶ Go on';};
+TOOLS.tidy.leave=()=>{T.run=false;tMusic(false);$('#tMon').classList.remove('walk');$('#tGo').textContent=tr(T.done?'↺ Again':'▶ Go on');};
 TOOLS.tidy.space=tGo;
 TOOLS.tidy.frame=dt=>{if(!T.run)return;T.left-=dt;if(T.left<=0){tFinish();return;}const p=1-T.left/T.dur;
   TOYS.forEach((t,i)=>{const el=$('#toy'+i);if(p>=t.p&&!el.classList.contains('got')){el.classList.add('got');T.got++;SFX.pop();}});tPaint();};
@@ -553,14 +578,14 @@ function dice(n){if(n>12)return tenFrame(n);const parts=n===0?[0]:n<=6?[n]:[Math
   const W=parts.length*D+(parts.length-1)*G;return `<svg viewBox="-14 -30 ${W+28} ${D+50}">${s}</svg>`;}
 function scatter(n){const W=640,H=330;if(!F.pts){F.pts=[];let tries=0;while(F.pts.length<n&&tries<5000){tries++;const p=[44+Math.random()*(W-88),48+Math.random()*(H-90)];if(F.pts.every(q=>Math.hypot(q[0]-p[0],q[1]-p[1])>84))F.pts.push(p);}}
   return `<svg viewBox="0 0 ${W} ${H}"><rect x="2" y="2" width="${W-4}" height="${H-4}" rx="30" fill="#fff" stroke="#2B2350" stroke-width="5"/>${F.pts.map(p=>fCounter(p[0],p[1],F.col,.9)).join('')}</svg>`;}
-function fDraw(){$('#fQ').textContent=F.q==='more'?'How many more to make 10?':'How many monsters?';const B=$('#fBoard'),A=$('#fAns');
-  if(F.phase==='idle'){B.innerHTML=`<div class="fcover">${monster('flash',{shape:1,eyes:2,extra:2,color:'#2ED3B7'})}</div>`;A.innerHTML='<small>Press Flash! or the space bar</small>';return;}
-  if(F.phase==='hidden'){B.innerHTML=`<div class="fcover">${monster('flash',{shape:1,eyes:2,extra:2,color:'#2ED3B7',mood:'cheer'})}<span>?</span></div>`;A.innerHTML='<small>What did you see? Press space to check.</small>';return;}
+function fDraw(){$('#fQ').textContent=tr(F.q==='more'?'How many more to make 10?':'How many monsters?');const B=$('#fBoard'),A=$('#fAns');
+  if(F.phase==='idle'){B.innerHTML=`<div class="fcover">${monster('flash',{shape:1,eyes:2,extra:2,color:'#2ED3B7'})}</div>`;A.innerHTML=`<small>${tr("Press Flash! or the space bar")}</small>`;return;}
+  if(F.phase==='hidden'){B.innerHTML=`<div class="fcover">${monster('flash',{shape:1,eyes:2,extra:2,color:'#2ED3B7',mood:'cheer'})}<span>?</span></div>`;A.innerHTML=`<small>${tr("What did you see? Press space to check.")}</small>`;return;}
   const n=F.n,mt=F.q==='more';
   B.innerHTML=mt?tenFrame(n,F.phase==='reveal'):F.show==='dice'?dice(n):F.show==='scatter'?scatter(n):tenFrame(n);
-  A.innerHTML=F.phase==='reveal'?(mt?`${n} + <span style="color:${shade(F.col,-50)}">${10-n}</span> = 10<small>${WORDS[n]} and ${WORDS[10-n]} make ten</small>`:`${n}<small>${WORDS[n]}</small>`):'';}
+  A.innerHTML=F.phase==='reveal'?(mt?`${n} + <span style="color:${shade(F.col,-50)}">${10-n}</span> = 10<small>${tr(WORDS[n])} ${choose("and","en")} ${tr(WORDS[10-n])} ${choose("make ten","is tien")}</small>`:`${n}<small>${tr(WORDS[n])}</small>`):'';}
 function fFlash(){ac();clearTimeout(F.hideT);fNew();F.phase='flash';fDraw();SFX.pop();const ms=F.flash*1000;if(ms>0)F.hideT=setTimeout(()=>{F.phase='hidden';fDraw();},ms);}
-function fReveal(){if(F.n===null)return;clearTimeout(F.hideT);F.phase='reveal';fDraw();SFX.chime();const n=F.n;say(F.q==='more'?`${n} and ${10-n} make ten!`:`${WORDS[n]}!`);}
+function fReveal(){if(F.n===null)return;clearTimeout(F.hideT);F.phase='reveal';fDraw();SFX.chime();const n=F.n;say(F.q==='more'?`${n} ${choose("and","en")} ${10-n} ${choose("make ten","is tien")}!`:`${tr(WORDS[n])}!`);}
 TOOLS.ten.enter=()=>fDraw();
 TOOLS.ten.leave=()=>{clearTimeout(F.hideT);if(F.phase==='flash')F.phase='hidden';};
 TOOLS.ten.space=()=>{if(F.phase==='flash'||F.phase==='hidden')fReveal();else fFlash();};
@@ -586,9 +611,9 @@ const SUN={n:'Sun',au:0,d:1392700,c:'#FFC93C',yr:null,f:'The Sun is a star. Abou
 const OBJ=[[.05,'a speck of dust'],[.15,'a grain of fine sand'],[.4,'a grain of salt'],[1,'a poppy seed'],[2.5,'a sesame seed'],[5,'a peppercorn'],[8,'a pea'],[15,'a marble'],[22,'a grape'],[40,'a ping-pong ball'],[67,'a tennis ball'],[115,'a grapefruit'],[220,'a football'],[500,'a beach ball'],[1000,'a big exercise ball']];
 const P={total:store.get('ptotal',100),mode:'orrery',pos:0,walk:false,pause:0,reached:-1,speed:store.get('pspeed',1),real:false,realK:0,lineup:0,focusI:null,focusB:0,info:null,ui:0,clock:0};
 const mPerAU=()=>P.total/NEP;
-function fmtM(m){if(m<1)return Math.round(m*100)+' cm';if(m<10)return m.toFixed(1)+' m';return Math.round(m).toLocaleString('en-GB')+' m';}
-function fmtSize(mm){if(mm<.1)return mm.toFixed(3)+' mm';if(mm<1)return mm.toFixed(2)+' mm';if(mm<10)return mm.toFixed(1)+' mm';if(mm<1000)return (mm/10).toFixed(1)+' cm';return (mm/1000).toFixed(2)+' m';}
-function like(mm){let b=OBJ[0];for(const o of OBJ)if(Math.abs(Math.log(mm/o[0]))<Math.abs(Math.log(mm/b[0])))b=o;const r=mm/b[0];return (r<.6?'even smaller than ':r>1.7?'a bit bigger than ':'about the size of ')+b[1];}
+function fmtM(m){if(m<1)return Math.round(m*100)+' cm';if(m<10)return fixed(m,1)+' m';return Math.round(m).toLocaleString(locale())+' m';}
+function fmtSize(mm){if(mm<.1)return fixed(mm,3)+' mm';if(mm<1)return fixed(mm,2)+' mm';if(mm<10)return fixed(mm,1)+' mm';if(mm<1000)return fixed(mm/10,1)+' cm';return fixed(mm/1000,2)+' m';}
+function like(mm){let b=OBJ[0];for(const o of OBJ)if(Math.abs(Math.log(mm/o[0]))<Math.abs(Math.log(mm/b[0])))b=o;const r=mm/b[0];return tr(r<.6?'even smaller than ':r>1.7?'a bit bigger than ':'about the size of ')+tr(b[1]);}
 const sizeMM=d=>d/AU_KM*mPerAU()*1000;
 function ball(p,cls){const bg=p.n==='Jupiter'?'repeating-linear-gradient(172deg,#e2cfae 0 7px,#b88a5e 7px 12px,#f3e9d6 12px 18px,#c99b6b 18px 22px)':p.n==='Earth'?'radial-gradient(circle at 30% 35%,#5f8a3a 0 14%,transparent 15%),radial-gradient(circle at 65% 60%,#7a9a4a 0 18%,transparent 19%),radial-gradient(circle at 35% 30%,#4f8fe0,#1f5fb0 60%,#0b2a6b)':p.n==='Sun'?'radial-gradient(circle at 40% 40%,#fff6c2,#ffc93c 45%,#ff7a00)':`radial-gradient(circle at 35% 30%,${shade(p.c,50)},${p.c} 55%,${shade(p.c,-50)})`;return `<div class="${cls}${p.ring?' ring':''}" style="background:${bg}"></div>`;}
 const dispR=d=>.35+1.15*Math.pow(d/12742,.62);
@@ -640,16 +665,16 @@ function markerCanvas(){const c=document.createElement('canvas');c.width=c.heigh
 /* ---- 3D scene ---- */
 let S3=null,S3load=null;
 function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.onload=()=>res();s.onerror=()=>rej(new Error('load '+src));document.head.appendChild(s);});}
-function pInit(){if(S3load)return S3load;const m=$('#pMsg');m.style.display='';m.textContent='Building the solar system…';
+function pInit(){if(S3load)return S3load;const m=$('#pMsg');m.style.display='';m.textContent=tr('Building the solar system…');
   S3load=(window.THREE?Promise.resolve():loadScript('https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js'))
    .then(()=>THREE.OrbitControls?null:loadScript('https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js'))
    .then(()=>new Promise(r=>setTimeout(r,40))).then(()=>{pBuild();if(S3)m.style.display='none';})
-   .catch(e=>{console.error(e);m.style.display='';m.textContent='The 3D solar system could not load. Check the internet connection and reload the page.';});
+   .catch(e=>{console.error(e);m.style.display='';m.textContent=tr('The 3D solar system could not load. Check the internet connection and reload the page.');});
   return S3load;}
 function tex(c){const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;t.anisotropy=4;return t;}
 function textSprite(txt){const c=document.createElement('canvas');c.width=256;c.height=96;const x=c.getContext('2d');x.font='600 46px Fredoka, sans-serif';x.textAlign='center';x.fillStyle='rgba(255,214,120,.95)';x.fillText(txt,128,62);const s=new THREE.Sprite(new THREE.SpriteMaterial({map:tex(c),transparent:true,depthWrite:false}));s.scale.set(9,3.4,1);return s;}
 function pBuild(){const T=THREE,cv=$('#pCanvas');let renderer;
-  try{renderer=new T.WebGLRenderer({canvas:cv,antialias:true});}catch(e){$('#pMsg').textContent='This browser cannot show 3D graphics. Try Chrome or Edge.';return;}
+  try{renderer=new T.WebGLRenderer({canvas:cv,antialias:true});}catch(e){$('#pMsg').textContent=tr('This browser cannot show 3D graphics. Try Chrome or Edge.');return;}
   renderer.outputEncoding=T.sRGBEncoding;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;renderer.setPixelRatio(Math.min(devicePixelRatio,2));
   const scene=new T.Scene(),cam=new T.PerspectiveCamera(45,1,.01,40000);cam.position.set(0,150,220);
   const controls=new T.OrbitControls(cam,cv);controls.enableDamping=true;controls.dampingFactor=.07;controls.enablePan=false;controls.minDistance=14;controls.maxDistance=650;controls.autoRotate=true;controls.autoRotateSpeed=.3;
@@ -683,7 +708,7 @@ function pTicks(){if(!S3)return;const T=S3.T,g=S3.ticks;while(g.children.length)
   const upm=K*NEP/P.total,steps=[1,2,5,10,20,25,50,100,200,250,500,1000],step=steps.find(s=>s>=P.total/10)||1000,mat=new T.LineBasicMaterial({color:0xffd36b,transparent:true,opacity:.65});
   for(let m=step;m<=P.total+1e-6;m+=step){const x=m*upm;g.add(new T.Line(new T.BufferGeometry().setFromPoints([new T.Vector3(x,-1.4,0),new T.Vector3(x,1.4,0)]),mat));const s=textSprite(fmtM(m));s.position.set(x,3.4,0);g.add(s);}}
 function pMakeLabels(){const wrap=$('#pLabels');wrap.innerHTML='';S3.lbl=[-1,0,1,2,3,4,5,6,7].map(i=>{const d=document.createElement('div');d.className='plbl';d.addEventListener('click',()=>{ac();if(P.mode==='walk')pJump(i);else pShowInfo(i);});wrap.appendChild(d);return {i,d};});pLblText();}
-function pLblText(){if(!S3)return;S3.lbl.forEach(({i,d})=>{const p=i<0?SUN:PL[i];d.innerHTML=p.n+(P.mode==='walk'&&i>=0?`<small>${fmtM(p.au*mPerAU())}</small>`:'');});}
+function pLblText(){if(!S3)return;S3.lbl.forEach(({i,d})=>{const p=i<0?SUN:PL[i];d.innerHTML=tr(p.n)+(P.mode==='walk'&&i>=0?`<small>${fmtM(p.au*mPerAU())}</small>`:'');});}
 function pLabels(){const v=S3.v,w=S3.w,h=S3.h,cam=S3.cam;S3.lbl.forEach(({i,d})=>{let r;if(i<0){r=SUN_R*S3.sunMesh.scale.x;v.set(0,0,0);}else{const o=S3.objs[i];r=o.cur;v.copy(o.g.position);}
   const dist=v.distanceTo(cam.position);v.y+=r*1.25+dist*.012;v.project(cam);
   if(v.z>1||(P.mode==='walk'&&dist>900)||(P.mode==='walk'&&P.lineup<1)){d.style.display='none';return;}
@@ -699,29 +724,33 @@ function pCamDesired(){const T=S3.T;if(P.mode==='orrery')return {p:new T.Vector3
 function pWalkStep(dt){if(!P.walk)return;if(P.pause>0){P.pause-=dt;if(P.pause<=0)P.focusI=null;return;}
   P.pos+=dt*[.28,.9,2.8][P.speed]*(P.pos<1.7?.4:1);const nx=P.reached+1;
   if(nx<PL.length&&P.pos>=PL[nx].au){P.pos=PL[nx].au;P.reached=nx;pArrive(nx);}}
-function pArrive(i){P.focusI=i;P.pause=3.8;pShowInfo(i);SFX.chime();say(PL[i].n);
-  if(i===PL.length-1){P.walk=false;P.pause=0;$('#pGo').textContent='↺ Walk again';confetti(170);SFX.fanfare();setTimeout(()=>say('You walked the whole solar system!'),1300);}}
-function pJump(i){P.walk=false;P.pause=0;if(i<0){P.pos=0;P.reached=-1;}else{P.pos=PL[i].au;P.reached=i;}P.focusI=i;pShowInfo(i);$('#pGo').textContent=P.pos>=NEP-1e-6?'↺ Walk again':P.pos>0?'🚶 Walk on':'🚶 Walk!';pHud();}
-function pReset(){P.walk=false;P.pos=0;P.reached=-1;P.pause=0;P.focusI=null;pHideInfo();$('#pGo').textContent='🚶 Walk!';pHud();}
-function pGo(){ac();if(P.mode!=='walk'){pSetMode('walk');return;}if(P.lineup<1)return;if(P.pos>=NEP-1e-6)pReset();P.walk=!P.walk;if(P.walk&&P.pause<=0)P.focusI=null;if(P.walk&&P.pos===0)say("Let's go! Leaving the Sun.");$('#pGo').textContent=P.walk?'⏸ Stop':'🚶 Walk on';}
+function pArrive(i){P.focusI=i;P.pause=3.8;pShowInfo(i);SFX.chime();say(tr(PL[i].n));
+  if(i===PL.length-1){P.walk=false;P.pause=0;$('#pGo').textContent=tr('↺ Walk again');confetti(170);SFX.fanfare();setTimeout(()=>say(tr('You walked the whole solar system!')),1300);}}
+function pJump(i){P.walk=false;P.pause=0;if(i<0){P.pos=0;P.reached=-1;}else{P.pos=PL[i].au;P.reached=i;}P.focusI=i;pShowInfo(i);$('#pGo').textContent=tr(P.pos>=NEP-1e-6?'↺ Walk again':P.pos>0?'🚶 Walk on':'🚶 Walk!');pHud();}
+function pReset(){P.walk=false;P.pos=0;P.reached=-1;P.pause=0;P.focusI=null;pHideInfo();$('#pGo').textContent=tr('🚶 Walk!');pHud();}
+function pGo(){ac();if(P.mode!=='walk'){pSetMode('walk');return;}if(P.lineup<1)return;if(P.pos>=NEP-1e-6)pReset();P.walk=!P.walk;if(P.walk&&P.pause<=0)P.focusI=null;if(P.walk&&P.pos===0)say(tr("Let's go! Leaving the Sun."));$('#pGo').textContent=tr(P.walk?'⏸ Stop':'🚶 Walk on');}
 let setModeSeg=()=>{};
 function pSetMode(m){P.mode=m;setModeSeg(m);$('#v-planets').classList.toggle('walk',m==='walk');pHideInfo();P.walk=false;P.focusI=null;P.pause=0;
-  if(m==='orrery'){P.real=false;$('#pReal').classList.remove('on');$('#pRealNote').hidden=true;if(S3)S3.fly=2.8;}else{$('#pGo').textContent=P.pos>0?'🚶 Walk on':'🚶 Walk!';if(P.lineup<1)say("Let's line up the planets!");}
+  if(m==='orrery'){P.real=false;$('#pReal').classList.remove('on');$('#pRealNote').hidden=true;if(S3)S3.fly=2.8;}else{$('#pGo').textContent=tr(P.pos>0?'🚶 Walk on':'🚶 Walk!');if(P.lineup<1)say(tr("Let's line up the planets!"));}
   pLblText();pHud();}
 function pShowInfo(i){P.info=i;const p=i<0?SUN:PL[i],m=mPerAU(),mm=sizeMM(p.d),walk=P.mode==='walk',el=$('#pInfo');
-  el.innerHTML=`<button class="px" id="pInfoX" aria-label="Close">×</button><div class="pi-head">${ball(p,'pi-ball')}<div><small>${i<0?'Our star':'Planet '+(i+1)+' from the Sun'}</small><h3>${p.n}</h3></div></div>
-   ${walk?`<div class="pi-big">${i<0?'<b>Start here</b>':`<b>${fmtM(p.au*m)}</b> from the Sun`}</div><div class="pi-row">${i<0?'':`That is ${Math.round(p.au*m/.5).toLocaleString('en-GB')} children's steps. `}At this scale ${i<0?'the Sun':'it'} is <b>${fmtSize(mm)}</b> wide: ${like(mm)}.</div>`:''}
-   <div class="pi-grid"><div><small>Diameter</small><b>${p.d.toLocaleString('en-GB')} km</b></div><div><small>From the Sun</small><b>${i<0?'–':Math.round(p.au*149.6).toLocaleString('en-GB')+' million km'}</b></div><div><small>One year</small><b>${p.yr||'–'}</b></div><div><small>Earths across</small><b>${(p.d/12742).toFixed(p.d<12742?2:p.d>200000?0:1)}</b></div></div><p>${p.f}</p>`;
+  const steps=Math.round(p.au*m/.5).toLocaleString(locale());
+  const label=i<0?tr('Our star'):choose('Planet '+(i+1)+' from the Sun','Planeet '+(i+1)+' vanaf de zon');
+  el.innerHTML=`<button class="px" id="pInfoX" aria-label="${tr('Close')}">×</button><div class="pi-head">${ball(p,'pi-ball')}<div><small>${label}</small><h3>${tr(p.n)}</h3></div></div>
+  ${walk?`<div class="pi-big">${i<0?'<b>'+tr('Start here')+'</b>':'<b>'+fmtM(p.au*m)+'</b> '+tr('from the Sun')}</div><div class="pi-row">${i<0?'':choose('That is '+steps+" children's steps. ",'Dat zijn '+steps+' kinderstappen. ')}${choose('At this scale '+(i<0?'the Sun':'it')+' is','Op deze schaal is '+(i<0?'de zon':'de planeet'))} <b>${fmtSize(mm)}</b> ${choose('wide','breed')}: ${like(mm)}.</div>`:''}
+  <div class="pi-grid"><div><small>${tr('Diameter')}</small><b>${p.d.toLocaleString(locale())} km</b></div><div><small>${tr('From the Sun')}</small><b>${i<0?'–':Math.round(p.au*149.6).toLocaleString(locale())+choose(' million km',' miljoen km')}</b></div><div><small>${tr('One year')}</small><b>${tr(p.yr||'–')}</b></div><div><small>${tr('Earths across')}</small><b>${fixed(p.d/12742,p.d<12742?2:p.d>200000?0:1)}</b></div></div><p>${tr(p.f)}</p>`;
   el.hidden=false;$('#pInfoX').onclick=pHideInfo;}
 function pHideInfo(){P.info=null;$('#pInfo').hidden=true;}
-function pTimeline(){const m=mPerAU();let h='<div class="bar"><i id="pFill"></i></div><span class="dl start" style="left:0">Sun &amp; inner planets</span><button class="dot sun" style="left:0%" data-i="-1" title="Sun" aria-label="Sun"></button>';
-  PL.forEach((p,i)=>{const pc=p.au/NEP*100;h+=`<button class="dot" data-i="${i}" style="left:${pc}%;background:${p.c}" title="${p.n}" aria-label="${p.n}"></button>`;if(i>=4)h+=`<span class="dl${i===7?' end':''}" style="left:${pc}%">${p.n}<small>${fmtM(p.au*m)}</small></span>`;});
+function pTimeline(){const m=mPerAU();let h=`<div class="bar"><i id="pFill"></i></div><span class="dl start" style="left:0">${tr('Sun & inner planets')}</span><button class="dot sun" style="left:0%" data-i="-1" title="${tr('Sun')}" aria-label="${tr('Sun')}"></button>`;
+  PL.forEach((p,i)=>{const pc=p.au/NEP*100;h+=`<button class="dot" data-i="${i}" style="left:${pc}%;background:${p.c}" title="${tr(p.n)}" aria-label="${tr(p.n)}"></button>`;if(i>=4)h+=`<span class="dl${i===7?' end':''}" style="left:${pc}%">${tr(p.n)}<small>${fmtM(p.au*m)}</small></span>`;});
   h+='<div class="thumb" id="pThumb"></div>';$('#pTl').innerHTML=h;$$('#pTl .dot').forEach(b=>b.onclick=()=>{ac();pJump(+b.dataset.i);});pHud();}
-function pHud(){const m=P.pos*mPerAU(),pc=P.pos/NEP*100;$('#pM').textContent=fmtM(m);$('#pSt').textContent=Math.round(m/.5).toLocaleString('en-GB');const t=$('#pThumb');if(t)t.style.left=pc+'%';const f=$('#pFill');if(f)f.style.width=pc+'%';}
-function pSub(){const sun=sizeMM(SUN.d),earth=sizeMM(12742);$('#pSub').innerHTML=`At this scale the Sun is <b>${fmtSize(sun)}</b> wide (${like(sun)}) and the Earth is just <b>${fmtSize(earth)}</b>. Every metre is ${Math.round(AU_KM/1e6/mPerAU()).toLocaleString('en-GB')} million km in space.`;}
+function pHud(){const m=P.pos*mPerAU(),pc=P.pos/NEP*100;$('#pM').textContent=fmtM(m);$('#pSt').textContent=Math.round(m/.5).toLocaleString(locale());const t=$('#pThumb');if(t)t.style.left=pc+'%';const f=$('#pFill');if(f)f.style.width=pc+'%';}
+function pSub(){const sun=sizeMM(SUN.d),earth=sizeMM(12742),km=Math.round(AU_KM/1e6/mPerAU()).toLocaleString(locale());$('#pSub').innerHTML=choose(
+`At this scale the Sun is <b>${fmtSize(sun)}</b> wide (${like(sun)}) and the Earth is just <b>${fmtSize(earth)}</b>. Every metre is ${km} million km in space.`,
+`Op deze schaal is de zon <b>${fmtSize(sun)}</b> breed (${like(sun)}) en de aarde maar <b>${fmtSize(earth)}</b>. Elke meter is ${km} miljoen km in de ruimte.`);}
 function pScaleChanged(){store.set('ptotal',P.total);pTicks();pTimeline();pLblText();pSub();if(P.info!==null)pShowInfo(P.info);}
 TOOLS.planets.enter=()=>{pSetMode(P.mode);pTimeline();pSub();pInit();};
-TOOLS.planets.leave=()=>{P.walk=false;$('#pGo').textContent=P.pos>0?'🚶 Walk on':'🚶 Walk!';};
+TOOLS.planets.leave=()=>{P.walk=false;$('#pGo').textContent=tr(P.pos>0?'🚶 Walk on':'🚶 Walk!');};
 TOOLS.planets.space=pGo;
 TOOLS.planets.esc=pHideInfo;
 TOOLS.planets.frame=dt=>{if(!S3)return;P.clock+=dt;const {renderer,cam,controls}=S3,cv=renderer.domElement,w=cv.clientWidth,h=cv.clientHeight;
@@ -747,21 +776,21 @@ setModeSeg=seg('#pMode',P.mode,v=>pSetMode(v));
 $('#pLine').onclick=()=>{ac();pSetMode('walk');};
 $('#pGo').onclick=pGo;$('#pReset').onclick=pReset;
 seg('#pSpeed',P.speed,v=>{P.speed=+v;store.set('pspeed',P.speed);});
-$('#pReal').onclick=()=>{P.real=!P.real;$('#pReal').classList.toggle('on',P.real);$('#pRealNote').hidden=!P.real;if(P.real){say('This is how small the planets really are!');}};
+$('#pReal').onclick=()=>{P.real=!P.real;$('#pReal').classList.toggle('on',P.real);$('#pRealNote').hidden=!P.real;if(P.real){say(tr('This is how small the planets really are!'));}};
 const setDist=seg('#pDist',P.total,v=>{P.total=+v;$('#pCustom').value='';pScaleChanged();});
 $('#pCustom').onchange=e=>{const v=clamp(+e.target.value||100,5,5000);e.target.value=v;P.total=v;setDist(-1);pScaleChanged();};
 if(![20,50,100,200,400].includes(P.total))$('#pCustom').value=P.total;
 $('#pPrint').onclick=()=>{const m=mPerAU(),cards=[SUN].concat(PL);
-  $('#printSigns').innerHTML=cards.map((p,i)=>{const mm=sizeMM(p.d);return `<div class="sign">${ball(p,'ball')}<h2>${p.n}</h2><div class="dd">${i===0?'Start here!':`${fmtM(p.au*m)} from the Sun · ${Math.round(p.au*m/.5).toLocaleString('en-GB')} steps`}</div><p>At this scale: ${fmtSize(mm)}, ${like(mm)}.<br>${p.f}</p></div>`;}).join('');
+  $('#printSigns').innerHTML=cards.map((p,i)=>{const mm=sizeMM(p.d);return `<div class="sign">${ball(p,'ball')}<h2>${tr(p.n)}</h2><div class="dd">${i===0?tr('Start here!'):`${fmtM(p.au*m)} ${tr('from the Sun')} · ${Math.round(p.au*m/.5).toLocaleString(locale())} ${choose('steps','stappen')}`}</div><p>${choose('At this scale','Op deze schaal')}: ${fmtSize(mm)}, ${like(mm)}.<br>${tr(p.f)}</p></div>`;}).join('');
   setTimeout(()=>window.print(),100);};
 /* ================= 5. NAME PICKER ================= */
 const DEF=['Amara','Leo','Sofia','Noah','Yuki','Mateo','Aisha','Finn','Lena','Omar','Mila','Arjun','Zoë','Lucas','Ingrid','Kofi','Elif','Sam','Nora','Hugo'];
 const G={names:store.get('names',DEF),picked:new Set(),noRep:store.get('norep',true),hide:false,busy:false};
-function gRender(){$('#gGrid').innerHTML=G.names.length?G.names.map((n,i)=>`<div class="ncard ${G.picked.has(i)?'picked':''}" id="nc${i}"><div class="av">${monster(n)}</div><b>${esc(n)}</b></div>`).join(''):'<p style="grid-column:1/-1;text-align:center;font-weight:800;color:var(--muted)">No names yet. Press <b>Edit class</b> to add your class.</p>';
-  $('#gCount').textContent=G.noRep&&G.names.length?`${G.picked.size} of ${G.names.length} have had a turn`:`${G.names.length} monsters`;}
+function gRender(){$('#gGrid').innerHTML=G.names.length?G.names.map((n,i)=>`<div class="ncard ${G.picked.has(i)?'picked':''}" id="nc${i}"><div class="av">${monster(n)}</div><b>${esc(n)}</b></div>`).join(''):translatedHTML('<p style="grid-column:1/-1;text-align:center;font-weight:800;color:var(--muted)">No names yet. Press <b>Edit class</b> to add your class.</p>');
+  $('#gCount').textContent=G.noRep&&G.names.length?choose(`${G.picked.size} of ${G.names.length} have had a turn`,`${G.picked.size} van ${G.names.length} hebben een beurt gehad`):`${G.names.length} monsters`;}
 function gPick(){ac();if(G.busy||!G.names.length)return;$('#gWin').classList.remove('open');
   const pool=G.names.map((n,i)=>i).filter(i=>!(G.noRep&&G.picked.has(i)));
-  if(!pool.length){$('#gCount').textContent='Everyone has had a turn! Press "Everyone back".';SFX.chime();return;}
+  if(!pool.length){$('#gCount').textContent=tr('Everyone has had a turn! Press "Everyone back".');SFX.chime();return;}
   G.busy=true;const win=pool[Math.random()*pool.length|0];let k=0,steps=pool.length>1?16:1,delay=60,prev=-1;
   const hop=()=>{$$('.ncard.hl').forEach(e=>e.classList.remove('hl'));
     if(k>=steps-1){const el=$('#nc'+win);if(el){el.classList.add('hl');el.scrollIntoView({block:'nearest'});}setTimeout(()=>gWin(win),420);return;}
@@ -774,7 +803,7 @@ TOOLS.names.space=gPick;
 TOOLS.names.esc=()=>{$('#gWin').classList.remove('open');$('#gDrawer').classList.remove('open');};
 $('#gGo').onclick=gPick;$('#gAgain').onclick=gPick;$('#gClose').onclick=()=>$('#gWin').classList.remove('open');
 $('#gReset').onclick=()=>{G.picked.clear();gRender();};
-$('#gHide').onclick=()=>{G.hide=!G.hide;$('#v-names').classList.toggle('hidenames',G.hide);$('#gHide').textContent=G.hide?'Show names':'Hide names';};
+$('#gHide').onclick=()=>{G.hide=!G.hide;$('#v-names').classList.toggle('hidenames',G.hide);$('#gHide').textContent=tr(G.hide?'Show names':'Hide names');};
 $('#gEdit').onclick=()=>{$('#gText').value=G.names.join('\n');$('#gNoRep').checked=G.noRep;$('#gDrawer').classList.add('open');setTimeout(()=>$('#gText').focus(),50);};
 $('#gCancel').onclick=()=>$('#gDrawer').classList.remove('open');
 $('#gClear').onclick=()=>{$('#gText').value='';};
@@ -784,7 +813,24 @@ $('#gSave').onclick=()=>{G.names=$('#gText').value.split(/\r?\n/).map(s=>s.trim(
 let last=performance.now();
 function step(dt){const T=TOOLS[cur];if(T&&T.frame)T.frame(dt);drawConfetti(dt);}
 function loop(now){requestAnimationFrame(loop);const dt=Math.min(.1,(now-last)/1000);last=now;step(dt);}
-route();requestAnimationFrame(loop);
+
+function refreshLanguage(){
+ applyStaticLanguage();
+ if(N.demo)$('#nMsg').textContent=tr('No microphone available or permission was not given. You can try the monster with the test slider below.');
+ const msg=$('#pMsg');if(msg.style.display!=='none'){const english=Object.keys(NL).find(key=>NL[key]===msg.textContent)||msg.textContent;msg.textContent=tr(english);}
+ $('#gridAll').innerHTML=card('noise')+card('names');
+ $('#gridAge').innerHTML=card('tidy')+card('ten')+card('planets');
+ $('#legend').innerHTML=Object.values(AGES).map(a=>`<span class="age" style="background:${a.c}">${tr(a.t)}</span>`).join('');
+ if(cur){const tool=TOOLS[cur];$('#tbTitle').textContent=tr(tool.t);$('#tbAge').textContent=tr(AGES[tool.age].t);document.title=tr(tool.t)+' · Monster Classroom';}
+ nRender();nStars();$('#nStart').textContent=tr(N.on?'⏸ Stop listening':'🎤 Start listening');
+ $('#tGo').textContent=tr(T.done?'↺ Again':T.run?'⏸ Pause':T.left===T.dur?'▶ Start':'▶ Go on');
+ fDraw();gRender();$('#gHide').textContent=tr(G.hide?'Show names':'Hide names');
+ $('#pGo').textContent=tr(P.walk?'⏸ Stop':P.pos>=NEP-1e-6?'↺ Walk again':P.pos>0?'🚶 Walk on':'🚶 Walk!');
+ pTimeline();pSub();pLblText();pTicks();if(P.info!==null)pShowInfo(P.info);
+}
+document.querySelectorAll('.language-select').forEach(el=>el.addEventListener('change',()=>{language=el.value==='en'?'en':'nl';store.set('language',language);if('speechSynthesis' in window)speechSynthesis.cancel();refreshLanguage();}));
+
+refreshLanguage();route();requestAnimationFrame(loop);
 window.__mc={go:route,step:(n,d)=>{for(let i=0;i<n;i++)step(d||1/60);},N,T,F,P,G,TOOLS};
 })();
 </script>
